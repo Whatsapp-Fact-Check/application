@@ -8,6 +8,10 @@ const wpp = require('./whatsapp');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.get('/', function (req,res) {
+    res.end("Whatsapp Fact Check Server...");
+});
+
 app.post('/wppMessage', function (req, res) {
     console.log("Received wpp msg request")
 
