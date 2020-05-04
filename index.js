@@ -8,7 +8,7 @@ const wpp = require('./whatsapp');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get('/', function (req,res) {
+app.get('/', function (req, res) {
     res.end("Whatsapp Fact Check Server...");
 });
 
@@ -17,7 +17,7 @@ app.post('/wppMessage', function (req, res) {
 
     let body = req.body.Body;
     wpp.processWppMessage(body, (userResponse) => {
-        res.writeHead(200, {'Content-Type': 'text/xml'});
+        res.writeHead(200, { 'Content-Type': 'text/xml' });
         res.end(userResponse);
         console.log("Returned answer to user\n");
     });
@@ -36,7 +36,7 @@ app.listen(process.env.PORT, function (err) {
     if (err) {
         throw err
     }
-    console.log('Example app listening on port 8080!');
+    console.log('Example app listening on port ' + process.env.PORT);
 });
 
 bus.addEventListener('receivedGoogleResponse', (result_message) => {
