@@ -32,7 +32,7 @@ app.post('/statusCallback', function (req, res) {
 });
 
 
-app.listen(process.env.server_port, function (err) {
+app.listen(process.env.PORT, function (err) {
     if (err) {
         throw err
     }
