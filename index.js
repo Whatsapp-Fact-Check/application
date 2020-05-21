@@ -14,7 +14,8 @@ app.get('/', function (req, res) {
 
 app.post('/wppMessage', function (req, res) {
     console.log("Received wpp msg request")
-
+    console.log(req.body);
+    
     let body = req.body.Body;
     wpp.processWppMessage(body, (userResponse) => {
         res.writeHead(200, { 'Content-Type': 'text/xml' });
