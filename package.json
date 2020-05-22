@@ -10,6 +10,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@google-cloud/vision": "^1.11.0",
     "article-parser": "^4.1.2",
     "axios": "^0.19.2",
     "dotenv": "^8.2.0",
