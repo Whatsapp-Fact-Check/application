@@ -1,4 +1,3 @@
-/ngrok.exe
 /node_modules
 /.env
 /google-credentials.json
