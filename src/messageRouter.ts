@@ -3,47 +3,9 @@
  * Lembrar de importar algo do messageProcessor
  */
 
-export interface MessageRequest {
-    text: string
-    urlMedia?: string    
-    whatsapp: string    
-}
-
- export interface MessageProcessor {
-     type: string
-    processMessage: (message: MessageRequest) => Promise<MessageResponse>
- }
-
- export type messageResponseType = "Hit" | "NoHit"
- export interface MessageResponse {
-    type: messageResponseType
-
- }
-
- export interface HitResult {
-     link:string
-     title:string
- }
- export interface MessageResponseHit extends MessageResponse {
-     hits: HitResult[]
- }
-
- export interface DomainResponse {
-     url:string
-     etc:string
- }
- export interface DomainSearch {
-     domainResponse:DomainResponse
- }
-
- export interface ImageReverseSearch {
-    url:string
- }
-
- export interface MessageResponseNoHit extends MessageResponse {
-    domainSearch?: DomainSearch
-    imageReverseSearch?: ImageReverseSearch
-}
+import { MessageProcessor } from './messageProcessor/messageProcessor'
+import { MessageRequest } from './messageRequest'
+import { MessageResponse } from './messageResponse/messageResponse'
 
 
 type Constructor<T> = {
@@ -79,9 +41,12 @@ type Constructor<T> = {
         const result = await messageProcessor.processMessage(message)
         return this.format(result)
     }
+
     private findType(message:MessageRequest){
         return "text"
     }
+
+
     private format(message:MessageResponse):string{
         //Chama por tipo. Usa o mesmo lance do processador
         return ""

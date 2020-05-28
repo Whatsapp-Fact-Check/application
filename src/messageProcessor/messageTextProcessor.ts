@@ -1,4 +1,8 @@
-import { MessageProcessor, MessageRequest, MessageResponse, RegisterMessageProcessor } from "../messageRouter";
+import { RegisterMessageProcessor } from '@/messageRouter';
+import { MessageProcessor } from './messageProcessor';
+import { MessageRequest } from '@/messageRequest';
+import { MessageResponse } from '@/messageResponse/messageResponse';
+
 
 
 @RegisterMessageProcessor
