@@ -1,9 +1,9 @@
-import { MessageRequest } from '@/messageRequest';
+import { MessageRequest } from '@/messageRequest/messageRequest';
 import { MessageResponse } from '@/messageResponse/messageResponse';
 
 
 
- export interface MessageProcessor {
-    type: string
+export interface MessageProcessor {
+   type: string
    processMessage: (message: MessageRequest) => Promise<MessageResponse>
 }

@@ -1,7 +1,7 @@
-import { MessageResponse } from './messageResponse';
+import { MessageResponse, MessageResponseFormater } from './messageResponse';
 
 
- export interface DomainResponse {
+export interface DomainResponse {
     url:string
     etc:string
 }
@@ -16,4 +16,18 @@ export interface ImageReverseSearch {
 export interface MessageResponseNoHit extends MessageResponse {
    domainSearch?: DomainSearch
    imageReverseSearch?: ImageReverseSearch
+}
+
+// @RegisterMessageResponseFormater
+export class NoHitFormater implements MessageResponseFormater {
+   type: string;
+
+   constructor(){
+       this.type = "NoHit"
+   }
+
+   formatMessage(message: MessageResponse) : string{
+       return "NO HIT!!!!"
+   }
+
 }
