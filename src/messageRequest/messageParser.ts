@@ -1,8 +1,7 @@
-import { MessageRequest } from './messageRequest';
+import { MessageRequest } from "./messageRequest"
 
-
-export interface MessageParser{
-    type: string;
-    messageRequest: MessageRequest;
-    parse: (messageBody: any) => MessageRequest;
+export interface MessageParser {
+    type: string
+    messageRequest: MessageRequest
+    parse: (messageBody: any) => MessageRequest
 }

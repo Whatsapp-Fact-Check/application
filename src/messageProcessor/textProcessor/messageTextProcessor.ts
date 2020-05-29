@@ -1,18 +1,15 @@
-import { RegisterMessageProcessor } from '@/messageRouter/messageRouter';
-import { MessageProcessor } from '../messageProcessor';
-import { MessageRequest } from '@/messageRequest/messageRequest';
-import { MessageResponse } from '@/messageResponse/messageResponse';
-
+import { RegisterMessageProcessor } from "@/messageRouter/messageRouter"
+import { MessageProcessor } from "../messageProcessor"
+import { MessageRequest } from "@/messageRequest/messageRequest"
+import { MessageResponse } from "@/messageResponse/messageResponse"
 
 @RegisterMessageProcessor
 export class MessageTextProcessor implements MessageProcessor {
-    type: string;
-    processMessage(message: MessageRequest):Promise<MessageResponse>{
-        return new Promise<MessageResponse>((resolve, reject) => {
-
-        })
+    type: string
+    processMessage(message: MessageRequest): Promise<MessageResponse> {
+        return new Promise<MessageResponse>((resolve, reject) => {})
     }
-    constructor(){
+    constructor() {
         this.type = "text"
     }
 }

@@ -1,9 +1,8 @@
-import { MessageResponse, MessageResponseFormater } from './messageResponse';
-
+import { MessageResponse, MessageResponseFormater } from "./messageResponse"
 
 export interface HitResult {
-    link:string
-    title:string
+    link: string
+    title: string
 }
 export interface MessageResponseHit extends MessageResponse {
     hits: HitResult[]
@@ -11,14 +10,13 @@ export interface MessageResponseHit extends MessageResponse {
 
 // @RegisterMessageResponseFormater
 export class HitFormater implements MessageResponseFormater {
-    type: string;
+    type: string
 
-    constructor(){
+    constructor() {
         this.type = "Hit"
     }
 
-    formatMessage(message: MessageResponse) : string{
+    formatMessage(message: MessageResponse): string {
         return "HIT!!!!"
     }
-
 }

@@ -1,33 +1,31 @@
-import { MessageResponse, MessageResponseFormater } from './messageResponse';
-
+import { MessageResponse, MessageResponseFormater } from "./messageResponse"
 
 export interface DomainResponse {
-    url:string
-    etc:string
+    url: string
+    etc: string
 }
 export interface DomainSearch {
-    domainResponse:DomainResponse
+    domainResponse: DomainResponse
 }
 
 export interface ImageReverseSearch {
-   url:string
+    url: string
 }
 
 export interface MessageResponseNoHit extends MessageResponse {
-   domainSearch?: DomainSearch
-   imageReverseSearch?: ImageReverseSearch
+    domainSearch?: DomainSearch
+    imageReverseSearch?: ImageReverseSearch
 }
 
 // @RegisterMessageResponseFormater
 export class NoHitFormater implements MessageResponseFormater {
-   type: string;
+    type: string
 
-   constructor(){
-       this.type = "NoHit"
-   }
+    constructor() {
+        this.type = "NoHit"
+    }
 
-   formatMessage(message: MessageResponse) : string{
-       return "NO HIT!!!!"
-   }
-
+    formatMessage(message: MessageResponse): string {
+        return "NO HIT!!!!"
+    }
 }

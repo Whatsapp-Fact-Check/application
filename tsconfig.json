@@ -3,7 +3,7 @@
     "lib": ["es6"],
     "target": "es6",
     "module": "commonjs",
-    "outDir": "js",
+    "outDir": "build",
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
