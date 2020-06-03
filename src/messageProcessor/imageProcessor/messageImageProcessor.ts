@@ -5,11 +5,11 @@ import { MessageResponse } from "@/messageResponse/messageResponse"
 
 @RegisterMessageProcessor
 export class MessageImageProcessor implements MessageProcessor {
-    type: string
-    processMessage(message: MessageRequest): Promise<MessageResponse> {
-        return new Promise<MessageResponse>((resolve, reject) => {})
-    }
-    constructor() {
-        this.type = "image"
-    }
+  type: string
+  processMessage(message: MessageRequest): Promise<MessageResponse> {
+    return new Promise<MessageResponse>((resolve, reject) => {})
+  }
+  constructor() {
+    this.type = "image"
+  }
 }

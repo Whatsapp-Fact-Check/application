@@ -1,9 +1,9 @@
 import { MessageRequest } from "@/messageRequest/messageRequest"
 
 export class MessageClassifier {
-    constructor() {}
+  constructor() {}
 
-    classify(message: MessageRequest): string {
-        return "text"
-    }
+  classify(message: MessageRequest): string {
+    return "text"
+  }
 }
