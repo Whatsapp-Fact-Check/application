@@ -6,7 +6,6 @@
 import { MessageProcessor } from "../messageProcessor/messageProcessor"
 import { MessageRequest } from "../messageRequest/messageRequest"
 import { MessageResponse } from "../messageResponse/messageResponse"
-import { MessageClassifier } from "./messageClassifier"
 import { MessageFormater } from "../messageFormater"
 
 export type Constructor<T> = {
@@ -24,7 +23,6 @@ export function RegisterMessageProcessor<T extends Constructor<MessageProcessor>
 }
 
 export class MessageRouter {
-  private messageClassifier: MessageClassifier = new MessageClassifier()
   private messageProcessors: Record<string, MessageProcessor> = {}
   private messageFormatter: MessageFormater
 
@@ -39,14 +37,9 @@ export class MessageRouter {
   }
 
   public async processMessage(message: MessageRequest): Promise<string> {
-    const type = this.findType(message)
-    const messageProcessor = this.messageProcessors[type]
+    const messageProcessor = this.messageProcessors[message.type]
     const result = await messageProcessor.processMessage(message)
     return this.format(result)
-  }
-
-  private findType(message: MessageRequest) {
-    return this.messageClassifier.classify(message)
   }
 
   private format(message: MessageResponse): string {
