@@ -1,10 +1,16 @@
 import axios from "axios"
 
-export class HttpRequest {
-  public async post(url: string, data: any): Promise<string> {
+export interface PythonRequest {
+  text: string
+}
+export default class HttpRequest {
+  constructor() {}
+
+  public async post(url: string, data: PythonRequest): Promise<string> {
     const response = await axios.post(url, data)
 
-    return response.data
+    return JSON.stringify(response.data)
   }
 }
-//como deixar type protected?
+
+//trocar por axios realmente mockado//
