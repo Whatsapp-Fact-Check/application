@@ -1,6 +1,7 @@
+
+export type messageRequestType = "text" | "link" | "image"
 export interface MessageRequest {
-  text: string
-  urlMedia?: string
-  mediaType?: string
-  whatsappNumber?: string
+  type: messageRequestType
+  id: string
+  timestamp: string
 }
