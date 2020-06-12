@@ -12,5 +12,3 @@ export default class HttpRequest {
     return JSON.stringify(response.data)
   }
 }
-
-//trocar por axios realmente mockado//
