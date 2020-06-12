@@ -1,6 +1,6 @@
 import { wppMessageBody } from "./wppMessageParser"
 import { MessageRequestText } from "@/messageRequest/messageRequestText"
-import { MessageParser } from './messageParser'
+import { MessageParser } from '.'
 
 test("should return MessageRequestText", () => {
   const instance = new MessageParser()

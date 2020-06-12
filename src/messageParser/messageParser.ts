@@ -1,11 +1,6 @@
 import { MessageRequest } from "../messageRequest/messageRequest"
 import { Constructor } from '@/messageRouter/messageRouter';
-
-export interface MessageParserInterface {
-  type: string
-  parse: (messageBody: any) => MessageRequest
-}
-
+import { wppMessageBody } from './wppMessageParser';
 
 const messageParserImplementations: Constructor<MessageParserInterface>[] = []
 function GetMessageParserImplementations(): Constructor<MessageParserInterface>[] {
@@ -14,6 +9,12 @@ function GetMessageParserImplementations(): Constructor<MessageParserInterface>[
 export function RegisterMessageParser<T extends Constructor<MessageParserInterface>>(ctor: T): T {
   messageParserImplementations.push(ctor)
   return ctor
+}
+
+export type messageBody = wppMessageBody
+export interface MessageParserInterface {
+  type: string
+  parse: (messageBody: messageBody) => MessageRequest
 }
 
 export class MessageParser {
