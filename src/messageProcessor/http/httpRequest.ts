@@ -9,6 +9,18 @@ export default class HttpRequest {
   public async post(url: string, data: PythonRequest): Promise<string> {
     const response = await axios.post(url, data)
 
-    return JSON.stringify(response.data)
+    if (response != null) {
+      if (response != undefined) {
+        if ("data" in response) {
+          return JSON.stringify(response.data)
+        } else {
+          throw new Error("NoDataField")
+        }
+      } else {
+        throw new Error("UndefinedAxiosResponse")
+      }
+    } else {
+      throw new Error("NullAxiosResponse")
+    }
   }
 }
