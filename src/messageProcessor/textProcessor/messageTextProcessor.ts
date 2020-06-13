@@ -17,7 +17,7 @@ export class MessageTextProcessor implements MessageProcessor {
         text: message.text
       }
 
-      const httpResponse = await this.httpRequestClient.post("https://dbsamuca.com", data)
+      const httpResponse = await this.httpRequestClient.post("https://dbsamuca.com", data, 2) //mudar 2 para variavel globar timeout
       resolve(this.pythonResponseParser.parseMessage(httpResponse))
     })
   }

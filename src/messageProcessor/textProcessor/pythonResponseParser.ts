@@ -2,12 +2,12 @@ import { MessageResponse } from "../../messageResponse/messageResponse"
 import { MessageResponseHit, HitResult } from "../../messageResponse/messageResponseHit"
 import { MessageResponseNoHit } from "../../messageResponse/messageResponseNoHIt"
 import { MessageResponseError } from "../../messageResponse/messageResponseError"
+import { HttpError } from "../../messageProcessor/http/httpRequest"
 
 export class PythonResponseParser {
   parseMessage(pythonStringResponse: string): MessageResponse {
     let hits: Array<HitResult>
     let messageResponseError: MessageResponseError
-
     if (this.isString(pythonStringResponse)) {
       hits = JSON.parse(pythonStringResponse)
     } else {
@@ -32,8 +32,13 @@ export class PythonResponseParser {
         return messageResponseHit as MessageResponse
       }
     } else {
-      messageResponseError = this.createMessageResponseError(new Error("NotHitResultArray"))
-      return messageResponseError as MessageResponse
+      if (this.isHttpError(hits)) {
+        messageResponseError = this.createMessageResponseError(new Error((hits as HttpError).error))
+        return messageResponseError as MessageResponse
+      } else {
+        messageResponseError = this.createMessageResponseError(new Error("UnknownTypePythonResponse"))
+        return messageResponseError as MessageResponse
+      }
     }
   }
 
@@ -46,7 +51,10 @@ export class PythonResponseParser {
   }
 
   private isString(objeto: any): objeto is string {
-    return typeof objeto === "string"
+    if (objeto !== null && objeto !== undefined) {
+      return typeof objeto === "string"
+    }
+    return false
   }
 
   private isArrayHitResult(hits: any): hits is Array<HitResult> {
@@ -68,5 +76,16 @@ export class PythonResponseParser {
     } else {
       return false
     }
+  }
+
+  private isHttpError(errorString: any): errorString is HttpError {
+    if (errorString) {
+      if ("error" in errorString) {
+        return true
+      } else {
+        return false
+      }
+    }
+    return false
   }
 }
