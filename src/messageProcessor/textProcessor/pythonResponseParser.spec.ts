@@ -4,6 +4,7 @@ import { MessageResponseHit, HitResult } from "../../messageResponse/messageResp
 import { MessageResponseNoHit } from "../../messageResponse/messageResponseNoHIt"
 import { expectedTestHits } from "../../__const__/consts"
 import { debuglog } from "util"
+import { MessageResponseError } from "../../messageResponse/messageResponseError"
 
 it("should receive a hit response from python and instantiate messageresponsehit", () => {
   const pythonResponseParserInstance = new PythonResponseParser()
@@ -32,35 +33,26 @@ it("should receive a nohit response from python and instantiate messageresponsen
   expect(parsedResponse).toEqual(expectedMessageResponse as MessageResponse)
 })
 
-it("should receive a null object response from python and throw error", () => {
+it("should receive a null object response from python and return messageResponseError", () => {
   const pythonResponseParserInstance = new PythonResponseParser()
 
   const hits: any = null
-  try {
-    const parsedResponse = pythonResponseParserInstance.parseMessage(JSON.stringify(hits))
-  } catch (e) {
-    expect(e).toEqual(Error("NotHitResultArray"))
-  }
+  const parsedResponse = pythonResponseParserInstance.parseMessage(JSON.stringify(hits))
+  expect((parsedResponse as MessageResponseError).error).toEqual(new Error("NotHitResultArray"))
 })
 
-it("should receive a not null object response but different from hitresultarray from python and throw error", () => {
+it("should receive a not null object response but different from hitresultarray from python and return messageResponseError", () => {
   const pythonResponseParserInstance = new PythonResponseParser()
 
   const hits: any = [{ nome: "Tom" }]
-  try {
-    const parsedResponse = pythonResponseParserInstance.parseMessage(JSON.stringify(hits))
-  } catch (e) {
-    expect(e).toEqual(Error("NotHitResultArray"))
-  }
+  const parsedResponse = pythonResponseParserInstance.parseMessage(JSON.stringify(hits))
+  expect((parsedResponse as MessageResponseError).error).toEqual(new Error("NotHitResultArray"))
 })
 
-it("should receive a undefined object from python and throw error", () => {
+it("should receive a undefined object from python and return messageResponseError", () => {
   const pythonResponseParserInstance = new PythonResponseParser()
 
   const hits: any = undefined
-  try {
-    const parsedResponse = pythonResponseParserInstance.parseMessage(JSON.stringify(hits))
-  } catch (e) {
-    expect(e).toEqual(Error("PythonResponseNotString"))
-  }
+  const parsedResponse = pythonResponseParserInstance.parseMessage(JSON.stringify(hits))
+  expect((parsedResponse as MessageResponseError).error).toEqual(Error("PythonResponseNotString"))
 })

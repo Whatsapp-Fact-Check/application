@@ -1,14 +1,18 @@
 import { MessageResponse } from "../../messageResponse/messageResponse"
 import { MessageResponseHit, HitResult } from "../../messageResponse/messageResponseHit"
 import { MessageResponseNoHit } from "../../messageResponse/messageResponseNoHIt"
+import { MessageResponseError } from "../../messageResponse/messageResponseError"
 
 export class PythonResponseParser {
   parseMessage(pythonStringResponse: string): MessageResponse {
     let hits: Array<HitResult>
+    let messageResponseError: MessageResponseError
+
     if (this.isString(pythonStringResponse)) {
       hits = JSON.parse(pythonStringResponse)
     } else {
-      throw new Error("PythonResponseNotString")
+      messageResponseError = this.createMessageResponseError(new Error("PythonResponseNotString"))
+      return messageResponseError as MessageResponse
     }
     const messageResponseNoHit: MessageResponseNoHit = {
       type: "NoHit"
@@ -28,8 +32,17 @@ export class PythonResponseParser {
         return messageResponseHit as MessageResponse
       }
     } else {
-      throw new Error("NotHitResultArray")
+      messageResponseError = this.createMessageResponseError(new Error("NotHitResultArray"))
+      return messageResponseError as MessageResponse
     }
+  }
+
+  private createMessageResponseError(error: Error): MessageResponseError {
+    const messageResponseError: MessageResponseError = {
+      type: "Error",
+      error: error
+    }
+    return messageResponseError
   }
 
   private isString(objeto: any): objeto is string {
@@ -38,11 +51,11 @@ export class PythonResponseParser {
 
   private isArrayHitResult(hits: any): hits is Array<HitResult> {
     if (hits instanceof Array) {
-      hits.forEach((element) => {
-        if (!this.isHitResult(element)) {
+      for (let i = 0; i < hits.length; ++i) {
+        if (!this.isHitResult(hits[i])) {
           return false
         }
-      })
+      }
       return true
     }
     return false
@@ -50,6 +63,7 @@ export class PythonResponseParser {
 
   private isHitResult(hitResult: any): hitResult is HitResult {
     if ("checado" in hitResult && "checado_por" in hitResult && "data" in hitResult && "link" in hitResult) {
+      console.log("isHitResult" + hitResult)
       return true
     } else {
       return false
