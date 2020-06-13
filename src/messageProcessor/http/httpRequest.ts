@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
 
 export interface PythonRequest {
   text: string
@@ -8,12 +8,21 @@ export interface HttpError {
 }
 
 export default class HttpRequest {
-  public async post(url: string, data: PythonRequest, timeout: number): Promise<string> {
-    const response = await axios.post(url, data, { timeout: timeout })
-    let httpErrorObject: HttpError
+  public async post(url: string, data: PythonRequest): Promise<string> {
+    try {
+      const result = await axios.post(url, data, { timeout: 2000 })
+      return this.responseParser(result)
+    } catch (err) {
+      return JSON.stringify(this.createHttpError(err.message))
+    }
 
+    //still have to set timeout as a global constant
+  }
+
+  private responseParser(response: AxiosResponse<any>): string {
+    let httpErrorObject: HttpError
     if (response !== null) {
-      if (response != undefined) {
+      if (response !== undefined) {
         if ("data" in response) {
           return JSON.stringify(response.data)
         } else {
