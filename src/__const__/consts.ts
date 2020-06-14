@@ -1,7 +1,7 @@
-import { PythonRequest } from "@/messageProcessor/http/httpRequest"
+import { FakeNewsDataBaseRequest } from "../messageProcessor/textProcessor/messageTextProcessor"
 import { HitResult } from "@/messageResponse/messageResponseHit"
 
-export const pythonRequestTestData: PythonRequest = {
+export const pythonRequestTestData: FakeNewsDataBaseRequest = {
   text: "bolsonaro fake news"
 }
 export const expectedTestHits: Array<HitResult> = [
