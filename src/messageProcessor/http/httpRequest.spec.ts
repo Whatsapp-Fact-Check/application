@@ -38,7 +38,7 @@ it("axios responding with null data should return HttpErrorObject stringified wi
   const spy = jest.spyOn(Axios, "post").mockImplementation((url, data) => Promise.resolve(null))
   const result = await httpRequestInstance.post("https://dbsamuca.com", pythonRequestTestData)
 
-  await expect(result).toEqual(JSON.stringify(expectedObject))
+  await expect(result).toEqual(expectedObject)
 })
 
 it("axios responding with undefined should return HttpErrorObject stringified with UndefinedAxiosResponse error field", async () => {
@@ -49,7 +49,7 @@ it("axios responding with undefined should return HttpErrorObject stringified wi
   }
   const spy = jest.spyOn(Axios, "post").mockImplementation((url, data) => Promise.resolve(undefined))
   const result = await httpRequestInstance.post("https://dbsamuca.com", pythonRequestTestData)
-  await expect(result).toEqual(JSON.stringify(expectedObject))
+  await expect(result).toEqual(expectedObject)
 })
 
 it("axios responding with unexpected object should return  HttpErrorObject stringified with NoDataField error field", async () => {
@@ -60,7 +60,7 @@ it("axios responding with unexpected object should return  HttpErrorObject strin
   }
   const spy = jest.spyOn(Axios, "post").mockImplementation((url, data) => Promise.resolve({ nome: "Tom" }))
   const result = await httpRequestInstance.post("https://dbsamuca.com", pythonRequestTestData)
-  await expect(result).toEqual(JSON.stringify(expectedObject))
+  await expect(result).toEqual(expectedObject)
 })
 it("axios should throw timeout error after 2 seconds", async () => {
   //setup
@@ -70,5 +70,5 @@ it("axios should throw timeout error after 2 seconds", async () => {
   }
   jest.spyOn(Axios, "post").mockRestore()
   const result = await httpRequestInstance.post("https://dbsamuca.com", pythonRequestTestData)
-  await expect(result).toEqual(JSON.stringify(expectedObject))
+  await expect(result).toEqual(expectedObject)
 })
