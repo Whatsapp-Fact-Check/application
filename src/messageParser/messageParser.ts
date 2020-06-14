@@ -27,6 +27,7 @@ export class MessageParser {
 
   private initParsers() {
     const messageParserImplementations = GetMessageParserImplementations()
+    console.log(messageParserImplementations)
     messageParserImplementations.forEach((MessageParser) => {
       const instance = new MessageParser()
       this.messageParsers[instance.type] = instance
