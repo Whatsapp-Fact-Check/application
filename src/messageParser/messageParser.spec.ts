@@ -20,12 +20,12 @@ test("should return MessageRequestText", () => {
   const expected: MessageRequestText = {
     type: "text",
     id: "whatsapp:+5561999822909",
-    timestamp: "",
+    timestamp: new Date(),
     text: "Coronavirus"
   }
 
   let parsed = instance.parse("wpp", message)
-  parsed.timestamp = ""
+  parsed.timestamp = expected.timestamp
   expect(parsed).toStrictEqual(expected)
 })
 

@@ -21,12 +21,12 @@ test("should return MessageRequestText", () => {
   const expected: MessageRequestText = {
     type: "text",
     id: "whatsapp:+5561999822909",
-    timestamp: "",
+    timestamp: new Date(),
     text: "Coronavirus"
   }
 
   let parsed = instance.parse(message)
-  parsed.timestamp = ""
+  parsed.timestamp = expected.timestamp
   expect(parsed).toStrictEqual(expected)
 })
 
@@ -48,12 +48,12 @@ test("should return MessageRequestLink", () => {
   const expected: MessageRequestLink = {
     type: "link",
     id: "whatsapp:+5561999822909",
-    timestamp: "",
+    timestamp: new Date(),
     url: "http://wwww.coronavirus.com.br"
   }
 
   let parsed = instance.parse(message)
-  parsed.timestamp = ""
+  parsed.timestamp = expected.timestamp
   expect(parsed).toStrictEqual(expected)
 })
 
@@ -77,13 +77,13 @@ test("should return MessageRequestImage", () => {
   const expected: MessageRequestImage = {
     type: "image",
     id: "whatsapp:+5561999822909",
-    timestamp: "",
+    timestamp: new Date(),
     mediaType: "image",
     mediaUrl: "http://wwww.twiliocloud.com.br"
   }
 
   let parsed = instance.parse(message)
-  parsed.timestamp = ""
+  parsed.timestamp = expected.timestamp
   expect(parsed).toStrictEqual(expected)
 })
 
