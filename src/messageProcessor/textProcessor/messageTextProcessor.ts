@@ -1,5 +1,4 @@
-import { RegisterMessageProcessor } from "../../messageRouter/messageRouter"
-import { MessageProcessor } from "../messageProcessor"
+import { MessageProcessorInterface, RegisterMessageProcessor } from "../messageProcessor"
 import { MessageRequest } from "../..//messageRequest/messageRequest"
 import { MessageResponse } from "../../messageResponse/messageResponse"
 import { FakeNewsDatabaseParser } from "./fakeNewsDatabaseParser"
@@ -11,7 +10,7 @@ export interface FakeNewsDataBaseRequest {
 }
 
 @RegisterMessageProcessor
-export class MessageTextProcessor implements MessageProcessor {
+export class MessageTextProcessor implements MessageProcessorInterface {
   type: string
   httpRequestClient: HttpRequest
   pythonResponseParser: FakeNewsDatabaseParser
