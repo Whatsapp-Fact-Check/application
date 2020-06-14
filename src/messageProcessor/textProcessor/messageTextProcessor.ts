@@ -1,26 +1,33 @@
-import { RegisterMessageProcessor } from "@/messageRouter/messageRouter"
+import { RegisterMessageProcessor } from "../../messageRouter/messageRouter"
 import { MessageProcessor } from "../messageProcessor"
-import { MessageRequest } from "@/messageRequest/messageRequest"
-import { MessageResponse } from "@/messageResponse/messageResponse"
+import { MessageRequest } from "../..//messageRequest/messageRequest"
+import { MessageResponse } from "../../messageResponse/messageResponse"
+import { FakeNewsDatabaseParser } from "./fakeNewsDatabaseParser"
+import HttpRequest from "../http/httpRequest"
+
+export interface FakeNewsDataBaseRequest {
+  text: string
+}
 
 @RegisterMessageProcessor
 export class MessageTextProcessor implements MessageProcessor {
   type: string
-  processMessage(message: MessageRequest): Promise<MessageResponse> {
-    return new Promise<MessageResponse>((resolve, reject) => {
-      // fazer requisicao http para o banco
-      //instanciar e retornar messageresponse
-      // falta implementar interface de comunicacao com db
-      // dbResponseString = get_result_db
-      // dataBaseResponseObject = dataBaseResponseParser(dbResponse)
-      // return new MessageResponse(findMessagetype(dataBaseResponseObject), dataBaseResponseObject)
+  httpRequestClient: HttpRequest
+  pythonResponseParser: FakeNewsDatabaseParser
+
+  async processMessage(message: MessageRequest): Promise<MessageResponse> {
+    return new Promise<MessageResponse>(async (resolve, reject) => {
+      const data: FakeNewsDataBaseRequest = {
+        text: message.text
+      }
+
+      const httpResponse = await this.httpRequestClient.post("https://dbsamuca.com", data) //mudar 2 para variavel globar timeout
+      resolve(this.pythonResponseParser.parseMessage(httpResponse))
     })
   }
   constructor() {
     this.type = "text"
-  }
-
-  private findMessageResponseType(message: string) {
-    //if DatabaseResponse(Checado) == null no hit, else hit
+    this.httpRequestClient = new HttpRequest()
+    this.pythonResponseParser = new FakeNewsDatabaseParser()
   }
 }
