@@ -1,9 +1,9 @@
-import { MessageRequest } from "../../messageRequest/messageRequest"
-import { MessageResponseHit, HitResult } from "../../messageResponse/messageResponseHit"
+import { MessageResponseHit } from "../../messageResponse/messageResponseHit"
 import { MessageTextProcessor } from "../../messageProcessor/textProcessor/messageTextProcessor"
 import { MessageResponse } from "../../messageResponse/messageResponse"
 import Axios from "axios"
-import { pythonRequestTestData, expectedTestHits, expectedThreeTestHits } from "../../__const__/consts"
+import { expectedTestHits, expectedThreeTestHits } from "../../__const__/consts"
+import { MessageRequestText } from "@/messageRequest/messageRequestText"
 
 it("should receive a messageRequest and return a messageResponse", async () => {
   //setup
@@ -14,7 +14,10 @@ it("should receive a messageRequest and return a messageResponse", async () => {
   )
 
   const message = "bolsonaro fake news"
-  const messageRequest: MessageRequest = {
+  const messageRequest: MessageRequestText = {
+    id: "abc",
+    timestamp: new Date(),
+    type: "text",
     text: message
   }
 
@@ -40,7 +43,10 @@ it("should receive 3 messageRequests and return 3 messageResponses", async () =>
   )
 
   const message = "bolsonaro fake news"
-  const messageRequest: MessageRequest = {
+  const messageRequest: MessageRequestText = {
+    id: "abc",
+    timestamp: new Date(),
+    type: "text",
     text: message
   }
 

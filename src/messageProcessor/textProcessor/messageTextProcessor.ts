@@ -4,6 +4,7 @@ import { MessageRequest } from "../..//messageRequest/messageRequest"
 import { MessageResponse } from "../../messageResponse/messageResponse"
 import { FakeNewsDatabaseParser } from "./fakeNewsDatabaseParser"
 import HttpRequest from "../http/httpRequest"
+import { MessageRequestText } from "../../messageRequest/messageRequestText"
 
 export interface FakeNewsDataBaseRequest {
   text: string
@@ -17,8 +18,10 @@ export class MessageTextProcessor implements MessageProcessor {
 
   async processMessage(message: MessageRequest): Promise<MessageResponse> {
     return new Promise<MessageResponse>(async (resolve, reject) => {
+      const messageRequestText = this.toMessageRequestText(message)
+
       const data: FakeNewsDataBaseRequest = {
-        text: message.text
+        text: messageRequestText.text
       }
 
       const httpResponse = await this.httpRequestClient.post("https://dbsamuca.com", data) //mudar 2 para variavel globar timeout
@@ -29,5 +32,9 @@ export class MessageTextProcessor implements MessageProcessor {
     this.type = "text"
     this.httpRequestClient = new HttpRequest()
     this.pythonResponseParser = new FakeNewsDatabaseParser()
+  }
+
+  private toMessageRequestText(message: MessageRequest): MessageRequestText {
+    return message as MessageRequestText
   }
 }
