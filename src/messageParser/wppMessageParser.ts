@@ -1,4 +1,4 @@
-import { MessageParser, MessageParserInterface, RegisterMessageParser } from "./messageParser"
+import { MessageParserInterface, RegisterMessageParser, messageBody } from "./messageParser"
 import { MessageRequest } from "../messageRequest/messageRequest"
 import { MessageRequestImage } from "@/messageRequest/messageRequestImage"
 import { MessageRequestLink } from "@/messageRequest/messageRequestLink"
@@ -33,9 +33,9 @@ export class WppMessageParser implements MessageParserInterface {
   }
 
   parse(messageBody: wppMessageBody): MessageRequest {
-    // if (typeof messageBody !== "wppMessageBody") {
-    //   throw Error("WppMessageBody does not match the expected: " + messageBody)
-    // }   
+    if (!this.isWppMessageBody(messageBody)) {
+      throw Error("MessageBody does not match the expected: " + messageBody)
+    }
 
     this.parseMessageText(messageBody)
     this.parseMedia(messageBody)
@@ -44,9 +44,9 @@ export class WppMessageParser implements MessageParserInterface {
     return this.getMessageRequest()
   }
 
-  // private isWppMessageBody(message: any): message is wppMessageBody {
-  //   return message instanceof "wppMessageBody";
-  // }
+  private isWppMessageBody(messageBody: wppMessageBody): messageBody is wppMessageBody {
+    return "NumMedia" in messageBody && "Body" in messageBody && "From" in messageBody
+  }
 
   private parseWhatsappNumber(messageBody: wppMessageBody) {
     this.wppNumber = messageBody.From
@@ -68,9 +68,13 @@ export class WppMessageParser implements MessageParserInterface {
   }
 
   private getMessageRequest(): MessageRequest {
-    if (this.isImageRequest()) return this.getImageRequest() as MessageRequest
-    else if (this.isLinkRequest()) return this.getLinkRequest() as MessageRequest
-    else if (this.isTextRequest()) return this.getTextRequest() as MessageRequest
+    if (this.isImageRequest()) {
+      return this.getImageRequest() as MessageRequest
+    } else if (this.isLinkRequest()) {
+      return this.getLinkRequest() as MessageRequest
+    } else if (this.isTextRequest()) {
+      return this.getTextRequest() as MessageRequest
+    }
 
     throw Error("Could not create message request: invalid message received (empty text or media type not supported)")
   }
@@ -121,7 +125,7 @@ export class WppMessageParser implements MessageParserInterface {
     }
   }
 
-  private getTimestamp() {
-    return new Date().getTime().toString()
+  private getTimestamp(): Date {
+    return new Date()
   }
 }
