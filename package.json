@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Bot de busca de Fake News",
   "main": "index.js",
+  "engines": {
+    "yarn": "1.x"
+  },
   "scripts": {
     "build": "check-node-version --node '>= 12' && rimraf ./build && tsc",
     "test": "check-node-version --node '>= 12' && jest",
