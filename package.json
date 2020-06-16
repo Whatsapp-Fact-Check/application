@@ -10,7 +10,7 @@
     "build": "check-node-version --node '>= 12' && rimraf ./build && tsc",
     "test": "check-node-version --node '>= 12' && jest",
     "debug": "check-node-version --node '>= 12' && nodemon --inspect src/index.ts",
-    "start": "check-node-version --node '>= 12' && yarn run build && node build/index.js",
+    "start": "yarn run build && node build/index.js",
     "lint": "check-node-version --node '>= 12' && eslint '*/**/*.{js,ts}' --quiet --fix",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
