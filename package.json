@@ -1,5 +1,5 @@
 {
-  "name": "WhatsappFactCheck Bot",
+  "name": "WhatsappFactCheck",
   "version": "1.0.0",
   "description": "Bot de busca de Fake News",
   "main": "index.js",
