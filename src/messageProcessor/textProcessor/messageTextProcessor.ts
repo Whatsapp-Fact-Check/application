@@ -14,7 +14,7 @@ export class MessageTextProcessor implements MessageProcessorInterface {
   type: string
   private httpRequestClient: HttpRequest
   private pythonResponseParser: FakeNewsDatabaseParser
-  private databaseUrl: string = "http://34.95.251.10"
+  private databaseUrl = "http://34.95.251.10:8080/checagem"
 
   constructor() {
     this.type = "text"
