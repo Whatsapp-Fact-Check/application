@@ -12,8 +12,15 @@ export interface FakeNewsDataBaseRequest {
 @RegisterMessageProcessor
 export class MessageTextProcessor implements MessageProcessorInterface {
   type: string
-  httpRequestClient: HttpRequest
-  pythonResponseParser: FakeNewsDatabaseParser
+  private httpRequestClient: HttpRequest
+  private pythonResponseParser: FakeNewsDatabaseParser
+  private databaseUrl: string = "http://34.95.251.10"
+
+  constructor() {
+    this.type = "text"
+    this.httpRequestClient = new HttpRequest()
+    this.pythonResponseParser = new FakeNewsDatabaseParser()
+  }
 
   async processMessage(message: MessageRequest): Promise<MessageResponse> {
     return new Promise<MessageResponse>(async (resolve, reject) => {
@@ -23,14 +30,9 @@ export class MessageTextProcessor implements MessageProcessorInterface {
         text: messageRequestText.text
       }
 
-      const httpResponse = await this.httpRequestClient.post("https://dbsamuca.com", data) //mudar 2 para variavel globar timeout
+      const httpResponse = await this.httpRequestClient.post(this.databaseUrl, data) //mudar 2 para variavel globar timeout
       resolve(this.pythonResponseParser.parseMessage(httpResponse))
     })
-  }
-  constructor() {
-    this.type = "text"
-    this.httpRequestClient = new HttpRequest()
-    this.pythonResponseParser = new FakeNewsDatabaseParser()
   }
 
   private toMessageRequestText(message: MessageRequest): MessageRequestText {
