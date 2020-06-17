@@ -26,7 +26,7 @@ export class HitFormater implements MessageResponseFormater {
   }
 
   private formatHit(hit: HitResult): string {
-    const formattedString = `Fato verificado: ${hit.checado}${this.newLine}Verificado por ${hit.checado_por}${this.newLine}Link: ${hit.link} `
+    const formattedString = `Fato verificado: ${hit.Checado}${this.newLine}Verificado por ${hit.Checado_por}${this.newLine}Link: ${hit.Link} `
     return formattedString
   }
 
