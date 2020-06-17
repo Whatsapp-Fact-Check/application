@@ -1,13 +1,15 @@
-import { MessageParser } from "./messageParser"
-import { MessageRouter } from "./messageRouter/messageRouter"
 import express from "express"
 import bodyParser from "body-parser"
+import { MessageParser } from "./messageParser"
+import { MessageRouter } from "./messageRouter/messageRouter"
+import { TwilioFormater } from './messageFormater/twilioFormater'
 
 export class WebHookServer {
   private port: number
   private app: any = express()
   private messageRouter: MessageRouter = new MessageRouter()
   private messageParser: MessageParser = new MessageParser()
+  private twilioFormater: TwilioFormater = new TwilioFormater()
 
   constructor(port: number) {
     this.port = port
@@ -41,6 +43,7 @@ export class WebHookServer {
 
       try {
         userResponse = await this.messageRouter.processMessage(this.messageParser.parse(parserType, req.body))
+        userResponse = this.twilioFormater.format(userResponse)
       } catch (error) {
         userResponse = "Desculpe, houve um problema"
         console.error(error)
@@ -48,7 +51,7 @@ export class WebHookServer {
 
       res.writeHead(200, { "Content-Type": "text/xml" })
       res.end(userResponse)
-      console.log("Returned answer to user\n")
+      console.log("Returned answer to user: " + userResponse + "\n")
     })
 
     this.app.post("/statusCallback", (req: any, res: any) => {
