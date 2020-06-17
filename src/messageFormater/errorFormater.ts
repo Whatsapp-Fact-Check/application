@@ -14,11 +14,8 @@ export class ErrorFormater implements MessageResponseFormater {
   formatMessage(message: MessageResponse): string {
     const messageResponseError = this.toMessageResponseError(message)
 
-    const formattedString =
-      "Tivemos um erro do tipo: " +
-      messageResponseError.error.message +
-      this.newLine +
-      "Entra em contato com a gente se continuar acontecendo!"
+    console.log("Error coming from messageProcessor: " + messageResponseError.error.message)
+    const formattedString = "Desculpe, houve um problema"
 
     return formattedString
   }
