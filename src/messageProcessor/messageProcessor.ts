@@ -25,14 +25,14 @@ export class MessageProcessor {
 
   private initProcessor() {
     const messageProcessorImplementations = GetMessageProcessorImplementations()
-    console.log(messageProcessorImplementations)
+    console.log("messageProcessorImplementations", messageProcessorImplementations)
     messageProcessorImplementations.forEach((MessageProcessor) => {
       const instance = new MessageProcessor()
       this.messageProcessors[instance.type] = instance
     })
   }
 
-  public async processMessage(message: MessageRequest): Promise<MessageResponse>{
+  public async processMessage(message: MessageRequest): Promise<MessageResponse> {
     const messageProcessor = this.messageProcessors[message.type]
     if (messageProcessor) {
       return await messageProcessor.processMessage(message)

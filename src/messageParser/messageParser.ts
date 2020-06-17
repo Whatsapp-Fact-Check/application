@@ -1,6 +1,6 @@
 import { MessageRequest } from "../messageRequest/messageRequest"
-import { Constructor } from '@/messageRouter/messageRouter';
-import { wppMessageBody } from './wppMessageParser';
+import { Constructor } from "@/messageRouter/messageRouter"
+import { wppMessageBody } from "./wppMessageParser"
 
 const messageParserImplementations: Constructor<MessageParserInterface>[] = []
 function GetMessageParserImplementations(): Constructor<MessageParserInterface>[] {
@@ -18,38 +18,26 @@ export interface MessageParserInterface {
 }
 
 export class MessageParser {
-
   private messageParsers: Record<string, MessageParserInterface> = {}
 
-  constructor(){
+  constructor() {
     this.initParsers()
   }
 
   private initParsers() {
     const messageParserImplementations = GetMessageParserImplementations()
-    console.log(messageParserImplementations)
+    console.log("messageParserImplementations", messageParserImplementations)
     messageParserImplementations.forEach((MessageParser) => {
       const instance = new MessageParser()
       this.messageParsers[instance.type] = instance
     })
   }
 
-  public parse(parserType:string, message: any) : MessageRequest{
-      let parser = this.messageParsers[parserType]
-      if (parser){
-        return parser.parse(message)
-      }
-      throw Error("Message parser not defined: " + parserType)
+  public parse(parserType: string, message: any): MessageRequest {
+    let parser = this.messageParsers[parserType]
+    if (parser) {
+      return parser.parse(message)
+    }
+    throw Error("Message parser not defined: " + parserType)
   }
 }
-
-
-
-
-
-
-
-
-
-
-
