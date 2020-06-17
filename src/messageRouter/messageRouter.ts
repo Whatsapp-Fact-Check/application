@@ -1,4 +1,3 @@
-
 import { MessageProcessor } from "../messageProcessor"
 import { MessageRequest } from "../messageRequest/messageRequest"
 import { MessageResponse } from "../messageResponse/messageResponse"
