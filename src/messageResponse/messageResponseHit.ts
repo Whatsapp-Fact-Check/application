@@ -1,10 +1,10 @@
 import { MessageResponse } from "./messageResponse"
 
 export interface HitResult {
-  checado: string
-  data: string
-  checado_por: string
-  link: string
+  Checado: string
+  Data: string
+  Checado_por: string
+  Link: string
 }
 export interface MessageResponseHit extends MessageResponse {
   hits: HitResult[]

@@ -75,7 +75,7 @@ export class FakeNewsDatabaseParser {
   }
 
   private isHitResult(hitResult: any): hitResult is HitResult {
-    if ("checado" in hitResult && "checado_por" in hitResult && "data" in hitResult && "link" in hitResult) {
+    if ("Checado" in hitResult && "Checado_por" in hitResult && "Data" in hitResult && "Link" in hitResult) {
       console.log("isHitResult" + hitResult)
       return true
     } else {
