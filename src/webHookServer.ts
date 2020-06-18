@@ -46,6 +46,7 @@ export class WebHookServer {
         userResponse = this.twilioFormater.format(userResponse)
       } catch (error) {
         userResponse = "Desculpe, houve um problema"
+        userResponse = this.twilioFormater.format(userResponse)
         console.error(error)
       }
 
