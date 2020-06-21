@@ -56,6 +56,7 @@ export class FakeNewsDatabaseParser {
   private createMessageResponseError(error: string): MessageResponseError {
     const messageResponseError: MessageResponseError = {
       type: "Error",
+      errorType: "internal",
       error: new Error(error)
     }
     return messageResponseError
