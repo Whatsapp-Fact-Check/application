@@ -1,7 +1,8 @@
 import { MessageProcessor } from "../messageProcessor"
-import { MessageRequest } from "../messageRequest/messageRequest"
 import { MessageResponse } from "../messageResponse/messageResponse"
 import { MessageFormater } from "../messageFormater"
+import { MessageResponseError } from '@/messageResponse/messageResponseError'
+import { messageRequestOrError } from '@/messageRequest/messageRequest'
 
 export type Constructor<T> = {
   new (...args: any[]): T
@@ -17,8 +18,14 @@ export class MessageRouter {
     this.messageFormatter = new MessageFormater()
   }
 
-  public async processMessage(message: MessageRequest): Promise<string> {
-    const result = await this.messageProcessor.processMessage(message)
+  public async processMessage(message: messageRequestOrError): Promise<string> {
+    let result: MessageResponse
+    if ("error" in message) {
+      result = message as MessageResponseError //messageRequestError has same properties as messageResponseError
+      result.type = "Error"
+    } else {
+      result = await this.messageProcessor.processMessage(message)
+    }
     return this.format(result)
   }
 
