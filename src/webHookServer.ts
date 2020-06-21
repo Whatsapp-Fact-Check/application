@@ -45,7 +45,7 @@ export class WebHookServer {
         userResponse = await this.messageRouter.processMessage(this.messageParser.parse(parserType, req.body))
         userResponse = this.twilioFormater.format(userResponse)
       } catch (error) {
-        userResponse = "Desculpe, houve um problema"
+        userResponse = "Encontramos um problema interno ao processar sua requisição, estamos trabalhando para corrigir 👨‍💻"
         userResponse = this.twilioFormater.format(userResponse)
         console.error(error)
       }
