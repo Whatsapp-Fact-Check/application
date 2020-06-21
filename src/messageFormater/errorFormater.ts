@@ -17,7 +17,7 @@ export class ErrorFormater implements MessageResponseFormater {
     let formattedString = ""
 
     if (messageResponseError.errorType == "invalidMedia"){
-      formattedString = "Ainda não suportamos imagem/vídeo/audio/link. Nos envie um texto curto descrevendo o fato que você quer checar"
+      formattedString = "Ainda não suportamos imagem/vídeo/audio/link. Nos envie um texto curto descrevendo o fato que você quer checar!"
     }
     else{ //internal error
       formattedString = "Encontramos um problema interno ao processar sua requisição, estamos trabalhando para corrigir 👨‍💻"
