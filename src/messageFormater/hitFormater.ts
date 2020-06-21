@@ -6,6 +6,8 @@ import { MessageResponseHit, HitResult } from "../messageResponse/messageRespons
 export class HitFormater implements MessageResponseFormater {
   type: string
   private newLine = "\n"
+  private doubleLine = "\n\n"
+  private bold = "*"
 
   constructor() {
     this.type = "Hit"
@@ -15,18 +17,21 @@ export class HitFormater implements MessageResponseFormater {
     const messageResponseHit = this.toMessageResponseHit(message)
 
     const formattedString =
-      "Encontrei " +
-      messageResponseHit.hits.length +
-      " registro(s) sobre esse tema! A seguir separei os mais relevantes: " +
-      this.newLine +
-      messageResponseHit.hits.map((hit) => this.formatHit(hit)).join(this.newLine)
+      "Encontrei registro(s) sobre esse tema! A seguir separei os mais relevantes: " +
+      this.doubleLine +
+      messageResponseHit.hits.map((hit) => this.formatHit(hit)).join(this.doubleLine)
     //iterar por todos os hits e mostrar os dois mais relevantes
 
     return formattedString
   }
 
   private formatHit(hit: HitResult): string {
-    const formattedString = `Fato verificado: ${hit.Checado}${this.newLine}Verificado por ${hit.Checado_por}${this.newLine}Link: ${hit.Link} `
+    const formattedString = 
+    `Fato verificado: ${this.bold + hit.Checado}${this.bold + this.newLine}` + 
+    `Verificado por: ${this.bold +  hit.Checado_por}${this.bold + this.newLine}`+
+    `Data da verificação: ${this.bold + hit.Data}${this.bold + this.newLine}`+
+    `Link: ${hit.Link}`
+
     return formattedString
   }
 
