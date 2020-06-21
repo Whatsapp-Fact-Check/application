@@ -2,6 +2,7 @@ import { WppMessageParser, wppMessageBody } from "./wppMessageParser"
 import { MessageRequestText } from "@/messageRequest/messageRequestText"
 import { MessageRequestLink } from "@/messageRequest/messageRequestLink"
 import { MessageRequestImage } from "@/messageRequest/messageRequestImage"
+import { MessageRequest } from '@/messageRequest/messageRequest'
 
 test("should return MessageRequestText", () => {
   const instance = new WppMessageParser()
@@ -25,7 +26,7 @@ test("should return MessageRequestText", () => {
     text: "Coronavirus"
   }
 
-  let parsed = instance.parse(message)
+  let parsed = instance.parse(message) as MessageRequest
   parsed.timestamp = expected.timestamp
   expect(parsed).toStrictEqual(expected)
 })
@@ -52,7 +53,7 @@ test("should return MessageRequestLink", () => {
     url: "http://wwww.coronavirus.com.br"
   }
 
-  let parsed = instance.parse(message)
+  let parsed = instance.parse(message) as MessageRequest
   parsed.timestamp = expected.timestamp
   expect(parsed).toStrictEqual(expected)
 })
@@ -82,7 +83,7 @@ test("should return MessageRequestImage", () => {
     mediaUrl: "http://wwww.twiliocloud.com.br"
   }
 
-  let parsed = instance.parse(message)
+  let parsed = instance.parse(message) as MessageRequest
   parsed.timestamp = expected.timestamp
   expect(parsed).toStrictEqual(expected)
 })

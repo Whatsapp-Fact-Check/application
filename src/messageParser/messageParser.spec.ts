@@ -1,6 +1,7 @@
 import { wppMessageBody } from "./wppMessageParser"
 import { MessageRequestText } from "@/messageRequest/messageRequestText"
 import { MessageParser } from '.'
+import { MessageRequest } from '@/messageRequest/messageRequest'
 
 test("should return MessageRequestText", () => {
   const instance = new MessageParser()
@@ -24,7 +25,7 @@ test("should return MessageRequestText", () => {
     text: "Coronavirus"
   }
 
-  let parsed = instance.parse("wpp", message)
+  let parsed = instance.parse("wpp", message) as MessageRequest
   parsed.timestamp = expected.timestamp
   expect(parsed).toStrictEqual(expected)
 })
