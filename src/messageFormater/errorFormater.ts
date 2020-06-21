@@ -12,11 +12,18 @@ export class ErrorFormater implements MessageResponseFormater {
   }
 
   formatMessage(message: MessageResponse): string {
-    const messageResponseError = this.toMessageResponseError(message)
 
-    console.log("Error coming from messageProcessor: " + messageResponseError.error.message)
-    const formattedString = "Desculpe, houve um problema"
+    let messageResponseError = this.toMessageResponseError(message)    
+    let formattedString = ""
 
+    if (messageResponseError.errorType == "invalidMedia"){
+      formattedString = "Ainda não suportamos imagem/vídeo/audio/link. Nos envie um texto curto descrevendo o fato que você quer checar"
+    }
+    else{ //internal error
+      formattedString = "Encontramos um problema interno ao processar sua requisição, estamos trabalhando para corrigir 👨‍💻"
+    }
+
+    console.log("Message Response Error: " + messageResponseError.error.message)
     return formattedString
   }
 
