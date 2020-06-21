@@ -1,3 +1,4 @@
+import { MessageRequestError } from './messageRequestError'
 
 export type messageRequestType = "text" | "link" | "image"
 export interface MessageRequest {
@@ -5,3 +6,5 @@ export interface MessageRequest {
   id: string
   timestamp: Date
 }
+
+export type messageRequestOrError = MessageRequest | MessageRequestError
