@@ -1,8 +1,9 @@
 import { MessageParserInterface, RegisterMessageParser, messageBody } from "./messageParser"
-import { MessageRequest } from "../messageRequest/messageRequest"
 import { MessageRequestImage } from "@/messageRequest/messageRequestImage"
 import { MessageRequestLink } from "@/messageRequest/messageRequestLink"
 import { MessageRequestText } from "@/messageRequest/messageRequestText"
+import { MessageRequestError } from '@/messageRequest/messageRequestError'
+import { messageRequestOrError } from '@/messageRequest/messageRequest'
 
 export interface wppMessageBody {
   SmsMessageSid: string
@@ -32,9 +33,9 @@ export class WppMessageParser implements MessageParserInterface {
     this.type = "wpp"
   }
 
-  parse(messageBody: wppMessageBody): MessageRequest {
+  parse(messageBody: wppMessageBody): messageRequestOrError {
     if (!this.isWppMessageBody(messageBody)) {
-      throw Error("MessageBody does not match the expected: " + messageBody)
+      return this.getInvalidWppBodyError(messageBody)
     }
 
     this.parseMessageText(messageBody)
@@ -43,9 +44,16 @@ export class WppMessageParser implements MessageParserInterface {
 
     return this.getMessageRequest()
   }
-
+  
   private isWppMessageBody(messageBody: wppMessageBody): messageBody is wppMessageBody {
     return "NumMedia" in messageBody && "Body" in messageBody && "From" in messageBody
+  }
+  
+  private getInvalidWppBodyError(messageBody: string): MessageRequestError {
+    return {
+      error: new Error("MessageBody does not match the expected: " + messageBody),
+      errorType: "internal"
+    }
   }
 
   private parseWhatsappNumber(messageBody: wppMessageBody) {
@@ -67,16 +75,27 @@ export class WppMessageParser implements MessageParserInterface {
     this.text = messageBody.Body
   }
 
-  private getMessageRequest(): MessageRequest {
-    if (this.isImageRequest()) {
-      return this.getImageRequest() as MessageRequest
-    } else if (this.isLinkRequest()) {
-      return this.getLinkRequest() as MessageRequest
-    } else if (this.isTextRequest()) {
-      return this.getTextRequest() as MessageRequest
+  private getMessageRequest(): messageRequestOrError {
+    // if (this.isImageRequest()) {
+    //   return this.getImageRequest()
+    // } else if (this.isLinkRequest()) {
+    //   return this.getLinkRequest()
+    // } else if (this.isTextRequest()) {
+    //   return this.getTextRequest()
+    // }
+    if (this.isTextRequest()) {
+      return this.getTextRequest()
     }
+    return this.getInvalidMediaError()
+  }
 
-    throw Error("Could not create message request: invalid message received (empty text or media type not supported)")
+  private getInvalidMediaError(): MessageRequestError {
+    return {
+      errorType: "invalidMedia",
+      error: new Error(
+        "Could not create message request: invalid message received (empty text or media type not supported)"
+      )
+    }
   }
 
   private isImageRequest(): boolean {
@@ -114,7 +133,7 @@ export class WppMessageParser implements MessageParserInterface {
   }
 
   private isTextRequest(): boolean {
-    return this.text != ""
+    return !this.isLinkRequest() && this.mediaType == ""
   }
   private getTextRequest(): MessageRequestText {
     return {
