@@ -10,6 +10,7 @@ export class NoHitFormater implements MessageResponseFormater {
   }
 
   formatMessage(message: MessageResponse): string {
-    return "Infelizmente não conseguimos localizar nenhuma checagem relacionada com a frase enviada. "
+    return "Não encontramos nada correspondente 😓\n\n" +
+    "Tente mandar de novo mudando um pouco a frase, usando sinônimos... Pode ser que isso ajude a gente a encontrar!"
   }
 }
