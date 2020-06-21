@@ -6,6 +6,7 @@ test("should return error formatted string response", () => {
 
   const messageResponse: MessageResponseError = {
     type: type,
+    errorType: "internal",
     error: new Error("NotHitResultArray")
   }
   const instance = new ErrorFormater()
