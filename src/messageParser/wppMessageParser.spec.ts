@@ -3,6 +3,8 @@ import { MessageRequestText } from "@/messageRequest/messageRequestText"
 import { MessageRequestLink } from "@/messageRequest/messageRequestLink"
 import { MessageRequestImage } from "@/messageRequest/messageRequestImage"
 import { MessageRequest } from '@/messageRequest/messageRequest'
+import { ErrorToNotifyUser } from '@/error/errorToNotifyUser'
+import { ErrorInternal } from '@/error/errorInternal'
 
 test("should return MessageRequestText", () => {
   const instance = new WppMessageParser()
@@ -88,7 +90,7 @@ test("should return MessageRequestText", () => {
 //   expect(parsed).toStrictEqual(expected)
 // })
 
-test("should throw error for not finding supported media", () => {
+test("should return errorInternal for unsupported media", () => {
   const instance = new WppMessageParser()
   const message: wppMessageBody = {
     SmsMessageSid: "string",
@@ -106,18 +108,25 @@ test("should throw error for not finding supported media", () => {
     ApiVersion: "string"
   }
 
-  expect(() => {
-    instance.parse(message)
-  }).toThrow("Could not create message request: invalid message received (media type not supported)")
+  const expected : ErrorToNotifyUser = {
+    error: new Error("Could not create message request: invalid message received (media type not supported)"),
+    errorType: "unsupportedMedia"
+  }
+  let parsed = instance.parse(message)
+  expect(parsed).toStrictEqual(expected)
+
 })
 
-test("should throw error for wrong messageBody", () => {
+test("should return errorInternal for wrong messageBody", () => {
   const instance = new WppMessageParser()
   const message: any = {
     SmsMessageSid: "string",
   }
 
-  expect(() => {
-    instance.parse(message)
-  }).toThrow()
+  const expected : ErrorInternal = {
+    error: new Error("MessageBody does not match the expected: " + message)
+  }
+  let parsed = instance.parse(message)
+  expect(parsed).toStrictEqual(expected)
+
 })
