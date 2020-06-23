@@ -1,4 +1,5 @@
-import { MessageRequestError } from './messageRequestError'
+import { ErrorToNotifyUser } from '@/error/errorToNotifyUser'
+import { ErrorInternal } from '@/error/errorInternal'
 
 export type messageRequestType = "text" | "link" | "image"
 export interface MessageRequest {
@@ -7,4 +8,4 @@ export interface MessageRequest {
   timestamp: Date
 }
 
-export type messageRequestOrError = MessageRequest | MessageRequestError
+export type messageRequestOrError = MessageRequest | ErrorToNotifyUser | ErrorInternal

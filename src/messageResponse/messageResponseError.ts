@@ -1,7 +1,11 @@
 import { MessageResponse } from "./messageResponse"
+import { ErrorToNotifyUser } from '@/error/errorToNotifyUser'
+import { ErrorInternal } from '@/error/errorInternal'
 
-export type errorType = "invalidMedia" | "internal"
-export interface MessageResponseError extends MessageResponse {
-  error: Error
-  errorType: errorType
+export interface MessageResponseErrorInternal extends MessageResponse {
+  errorInternal: ErrorInternal
+}
+
+export interface MessageResponseErrorToNotifyUser extends MessageResponse {
+  errorToNotifyUser: ErrorToNotifyUser
 }

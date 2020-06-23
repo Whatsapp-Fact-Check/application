@@ -1,8 +1,8 @@
 import { MessageResponse } from "@/messageResponse/messageResponse"
 import { MessageFormater } from "."
 import { MessageResponseHit, HitResult } from "../messageResponse/messageResponseHit"
-import { MessageResponseError } from "../messageResponse/messageResponseError"
 import { expectedTestHits } from "../__const__/consts"
+import { MessageResponseErrorInternal } from '@/messageResponse/messageResponseError'
 
 test("should return no hit formatted string response", () => {
   const type = "NoHit"
@@ -30,9 +30,9 @@ test("should return hit formatted string response", () => {
 test("should return error formatted string response", () => {
   const type = "Error"
 
-  const messageResponse: MessageResponseError = {
+  const messageResponse: MessageResponseErrorInternal = {
     type: type,
-    error: new Error("NotHitResultArray")
+    errorInternal: {error: new Error("NotHitResultArray")}
   }
   const instance = new MessageFormater()
   const expected = "Tivemos um erro do tipo: NotHitResultArray\nEntra em contato com a gente se continuar acontecendo!"
