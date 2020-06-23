@@ -1,7 +1,7 @@
 import { Constructor } from "@/messageRouter/messageRouter"
 import { wppMessageBody } from "./wppMessageParser"
-import { MessageRequestError } from '@/messageRequest/messageRequestError'
 import { messageRequestOrError } from '@/messageRequest/messageRequest'
+import { ErrorInternal } from '@/error/errorInternal'
 
 const messageParserImplementations: Constructor<MessageParserInterface>[] = []
 function GetMessageParserImplementations(): Constructor<MessageParserInterface>[] {
@@ -34,31 +34,17 @@ export class MessageParser {
     })
   }
 
-  private initParser(type: string) : MessageParserInterface | undefined{
-    let parser
-    const messageParserImplementations = GetMessageParserImplementations()
-    messageParserImplementations.forEach((MessageParser) => {
-      const instance = new MessageParser()
-      if (instance.type == type){
-        parser = instance
-      }
-    })
-
-    return parser
-  }
-
   public parse(parserType: string, message: any): messageRequestOrError {
-    let parser = this.initParser(parserType)
+    let parser = this.messageParsers[parserType]
     if (parser) {
       return parser.parse(message)
     }
     return this.getInvalidParserError()
   }
   
-  private getInvalidParserError(): MessageRequestError {
+  private getInvalidParserError(): ErrorInternal {
     return {
       error: new Error("Message Parser: Invalid parser type"),
-      errorType: "internal"
     }
   }
 }
