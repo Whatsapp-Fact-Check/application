@@ -26,11 +26,14 @@ export class HitFormater implements MessageResponseFormater {
   }
 
   private formatHit(hit: HitResult): string {
-    const formattedString = 
-    `Fato verificado: ${this.bold + hit.Checado}${this.bold + this.newLine}` + 
-    `Verificado por: ${this.bold +  hit.Checado_por}${this.bold + this.newLine}`+
-    `Data da verificação: ${this.bold + hit.Data}${this.bold + this.newLine}`+
-    `Link: ${hit.Link}`
+    let formattedString =
+      `Fato verificado: ${this.bold + hit.Checado}${this.bold + this.newLine}` +
+      `Verificado por: ${this.bold + hit.Checado_por}${this.bold + this.newLine}`
+    if (hit.Data !== "") {
+      formattedString += `Data da verificação: ${this.bold + hit.Data}${this.bold + this.newLine}` + `Link: ${hit.Link}`
+    } else {
+      formattedString += `Link: ${hit.Link}`
+    }
 
     return formattedString
   }
