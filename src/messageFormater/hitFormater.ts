@@ -26,6 +26,7 @@ export class HitFormater implements MessageResponseFormater {
   }
 
   private formatHit(hit: HitResult): string {
+    this.removeSpaceFromEntries(hit)
     let formattedString =
       `Fato verificado: ${this.bold + hit.Checado}${this.bold + this.newLine}` +
       `Verificado por: ${this.bold + hit.Checado_por}${this.bold + this.newLine}`
@@ -36,6 +37,21 @@ export class HitFormater implements MessageResponseFormater {
     }
 
     return formattedString
+  }
+
+  private removeSpaceFromEntries(hit: HitResult) {
+    if (hit.Checado.charAt(hit.Checado.length - 1) == " ") {
+      hit.Checado = hit.Checado.slice(0, -1)
+    }
+    if (hit.Checado_por.charAt(hit.Checado_por.length - 1) == " ") {
+      hit.Checado_por = hit.Checado_por.slice(0, -1)
+    }
+    if (hit.Data.charAt(hit.Data.length - 1) == " ") {
+      hit.Data = hit.Data.slice(0, -1)
+    }
+    if (hit.Link.charAt(hit.Link.length - 1) == " ") {
+      hit.Link = hit.Link.slice(0, -1)
+    }
   }
 
   private toMessageResponseHit(message: MessageResponse): MessageResponseHit {
