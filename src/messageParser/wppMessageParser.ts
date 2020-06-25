@@ -2,8 +2,9 @@ import { MessageParserInterface, RegisterMessageParser, messageBody } from "./me
 import { MessageRequestImage } from "@/messageRequest/messageRequestImage"
 import { MessageRequestLink } from "@/messageRequest/messageRequestLink"
 import { MessageRequestText } from "@/messageRequest/messageRequestText"
-import { MessageRequestError } from '@/messageRequest/messageRequestError'
-import { messageRequestOrError } from '@/messageRequest/messageRequest'
+import { messageRequestOrError } from "@/messageRequest/messageRequest"
+import { ErrorInternal } from "@/error/errorInternal"
+import { ErrorToNotifyUser } from "@/error/errorToNotifyUser"
 
 export interface wppMessageBody {
   SmsMessageSid: string
@@ -21,13 +22,14 @@ export interface wppMessageBody {
   ApiVersion: string
 }
 
+interface media {
+  mediaType: string
+  mediaUrl: string
+}
+
 @RegisterMessageParser
 export class WppMessageParser implements MessageParserInterface {
   type: string
-  private wppNumber: string = ""
-  private text: string = ""
-  private mediaType: string = ""
-  private mediaUrl: string = ""
 
   constructor() {
     this.type = "wpp"
@@ -38,44 +40,49 @@ export class WppMessageParser implements MessageParserInterface {
       return this.getInvalidWppBodyError(messageBody)
     }
 
-    this.parseMessageText(messageBody)
-    this.parseMedia(messageBody)
-    this.parseWhatsappNumber(messageBody)
+    let text: string = this.parseMessageText(messageBody)
+    let wppNumber: string = this.parseWhatsappNumber(messageBody)
+    let media: media = this.parseMedia(messageBody)
 
-    return this.getMessageRequest()
+    return this.decideMessageRequestType(text, wppNumber, media)
   }
-  
+
   private isWppMessageBody(messageBody: wppMessageBody): messageBody is wppMessageBody {
     return "NumMedia" in messageBody && "Body" in messageBody && "From" in messageBody
   }
-  
-  private getInvalidWppBodyError(messageBody: string): MessageRequestError {
+
+  private getInvalidWppBodyError(messageBody: string): ErrorInternal {
     return {
-      error: new Error("MessageBody does not match the expected: " + messageBody),
-      errorType: "internal"
+      error: new Error("MessageBody does not match the expected: " + messageBody)
     }
   }
 
-  private parseWhatsappNumber(messageBody: wppMessageBody) {
-    this.wppNumber = messageBody.From
+  private parseWhatsappNumber(messageBody: wppMessageBody): string {
+    return messageBody.From
   }
 
-  private parseMedia(messageBody: wppMessageBody) {
+  private parseMedia(messageBody: wppMessageBody): media {
+    let media: media = {
+      mediaUrl: "",
+      mediaType: ""
+    }
+
     if (parseInt(messageBody.NumMedia) == 1) {
-      this.mediaType = this.getMediaType(messageBody.MediaContentType0 as string)
-      this.mediaUrl = messageBody.MediaUrl0 as string
+      media.mediaType = this.getMediaType(messageBody.MediaContentType0 as string)
+      media.mediaUrl = messageBody.MediaUrl0 as string
     }
+    return media
   }
 
   private getMediaType(mediaType: string): string {
     return mediaType.split("/")[0] //media type come as image/jpeg or video/mp4. Take just image or video, without the file extension
   }
 
-  private parseMessageText(messageBody: wppMessageBody) {
-    this.text = messageBody.Body
+  private parseMessageText(messageBody: wppMessageBody): string {
+    return messageBody.Body
   }
 
-  private getMessageRequest(): messageRequestOrError {
+  private decideMessageRequestType(text: string, wppNumber: string, media: media): messageRequestOrError {
     // if (this.isImageRequest()) {
     //   return this.getImageRequest()
     // } else if (this.isLinkRequest()) {
@@ -83,35 +90,47 @@ export class WppMessageParser implements MessageParserInterface {
     // } else if (this.isTextRequest()) {
     //   return this.getTextRequest()
     // }
-    if (this.isTextRequest()) {
-      return this.getTextRequest()
+    if (this.isTextRequest(text, media)) {
+      return this.getTextRequest(text, wppNumber)
     }
-    return this.getInvalidMediaError()
+    return this.getUnsupportedMediaError()
   }
 
-  private getInvalidMediaError(): MessageRequestError {
+  private getUnsupportedMediaError(): ErrorToNotifyUser {
     return {
-      errorType: "invalidMedia",
+      errorType: "unsupportedMedia",
       error: new Error(
-        "Could not create message request: invalid message received (empty text or media type not supported)"
+        "Could not create message request: invalid message received (media type not supported)"
       )
     }
   }
 
-  private isImageRequest(): boolean {
-    return this.mediaType == "image"
+  private isTextRequest(text: string, media: media): boolean {
+    return !this.isLinkRequest(text) && media.mediaType == ""
   }
-  private getImageRequest(): MessageRequestImage {
+  private getTextRequest(text: string, wppNumber: string): MessageRequestText {
     return {
-      type: "image",
-      id: this.wppNumber,
+      type: "text",
+      id: wppNumber,
       timestamp: this.getTimestamp(),
-      mediaType: this.mediaType,
-      mediaUrl: this.mediaUrl
+      text: text
     }
   }
 
-  private isLinkRequest(): boolean {
+  private isImageRequest(media: media): boolean {
+    return media.mediaType == "image"
+  }
+  private getImageRequest(wppNumber: string, media: media): MessageRequestImage {
+    return {
+      type: "image",
+      id: wppNumber,
+      timestamp: this.getTimestamp(),
+      mediaType: media.mediaType,
+      mediaUrl: media.mediaUrl
+    }
+  }
+
+  private isLinkRequest(text: string): boolean {
     var pattern = new RegExp(
       "^(https?:\\/\\/)?" + // protocol
       "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
@@ -121,26 +140,14 @@ export class WppMessageParser implements MessageParserInterface {
         "(\\#[-a-z\\d_]*)?$",
       "i"
     ) // fragment locator
-    return !!pattern.test(this.text)
+    return !!pattern.test(text)
   }
-  private getLinkRequest(): MessageRequestLink {
+  private getLinkRequest(text: string, wppNumber:string): MessageRequestLink {
     return {
       type: "link",
-      id: this.wppNumber,
+      id: wppNumber,
       timestamp: this.getTimestamp(),
-      url: this.text
-    }
-  }
-
-  private isTextRequest(): boolean {
-    return !this.isLinkRequest() && this.mediaType == ""
-  }
-  private getTextRequest(): MessageRequestText {
-    return {
-      type: "text",
-      id: this.wppNumber,
-      timestamp: this.getTimestamp(),
-      text: this.text
+      url: text
     }
   }
 
