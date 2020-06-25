@@ -7,8 +7,9 @@ test("should return internal error string response", () => {
 
   const messageResponse: MessageResponseErrorInternal = {
     type: type,
-    errorType: "internal",
-    error: new Error("NotHitResultArray")
+    errorInternal: {
+      error: new Error("NotHitResultArray")
+    }
   }
   const instance = new ErrorFormater()
   const expected = "Encontramos um problema interno ao processar sua requisição, estamos trabalhando para corrigir 👨‍💻"
