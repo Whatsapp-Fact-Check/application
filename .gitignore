@@ -1,3 +1,6 @@
-/ngrok.exe
 /node_modules
 /.env
+/google-credentials.json
+/js
+build/
+yarn-error.log
