@@ -13,12 +13,12 @@ export class ErrorFormater implements MessageResponseFormater {
 
   formatMessage(message: MessageResponse): string {
     if (this.isMessageResponseErrorInternal(message)) {
-      console.error("Error formater - internal error: ", message.errorInternal)
+      console.log("Error formater - internal error: ", message.errorInternal)
       return this.formatInternalError(message)
     }
 
     if (this.isMessageResponseErrorToNotifyUser(message)) {
-      console.error("Error formater - to notify user error: ", message.errorToNotifyUser)
+      console.log("Error formater - to notify user error: ", message.errorToNotifyUser)
       return this.formatErrorToNotifyUser(message)
     }
 
