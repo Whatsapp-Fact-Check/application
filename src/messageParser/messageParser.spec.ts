@@ -2,6 +2,7 @@ import { wppMessageBody } from "./wppMessageParser"
 import { MessageRequestText } from "@/messageRequest/messageRequestText"
 import { MessageParser } from '.'
 import { MessageRequest } from '@/messageRequest/messageRequest'
+import { ErrorInternal } from '@/error/errorInternal'
 
 test("should return MessageRequestText", () => {
   const instance = new MessageParser()
@@ -30,7 +31,8 @@ test("should return MessageRequestText", () => {
   expect(parsed).toStrictEqual(expected)
 })
 
-test("should throw error for wrong parser type", () => {
+
+test("should return errorInternal for wrong parser type", () => {
   const instance = new MessageParser()
   const message: wppMessageBody = {
     SmsMessageSid: "string",
@@ -46,7 +48,11 @@ test("should throw error for wrong parser type", () => {
     ApiVersion: "string"
   }
 
-  expect(() => {
-    instance.parse("facebook", message)
-  }).toThrow()
+  const expected : ErrorInternal = {
+    error: new Error("Message Parser: Invalid parser type")
+  }
+
+  let parsed = instance.parse("facebook", message)
+  expect(parsed).toStrictEqual(expected)
 })
+

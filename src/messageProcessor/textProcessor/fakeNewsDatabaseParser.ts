@@ -1,26 +1,26 @@
 import { MessageResponse } from "../../messageResponse/messageResponse"
 import { MessageResponseHit, HitResult } from "../../messageResponse/messageResponseHit"
 import { MessageResponseNoHit } from "../../messageResponse/messageResponseNoHIt"
-import { MessageResponseError } from "../../messageResponse/messageResponseError"
 import { HttpError } from "../http/httpRequest"
+import { MessageResponseErrorInternal } from '@/messageResponse/messageResponseError'
 
 export class FakeNewsDatabaseParser {
   parseMessage(response: string | HttpError): MessageResponse {
     if (this.isHttpError(response)) {
-      const messageResponseError = this.createMessageResponseError(response.error)
-      return messageResponseError as MessageResponse
+      const messageResponseError = this.createMessageResponseErrorInternal(response.error)
+      return messageResponseError
     }
 
     if (!this.isJson(response)) {
-      const messageResponseError = this.createMessageResponseError("NotJsonStructure")
-      return messageResponseError as MessageResponse
+      const messageResponseError = this.createMessageResponseErrorInternal("NotJsonStructure")
+      return messageResponseError
     }
 
     if (this.isArrayHitResult(response)) {
       return this.getMessageResponse(response)
     } else {
-      const messageResponseError = this.createMessageResponseError("UnknownTypePythonResponse")
-      return messageResponseError as MessageResponse
+      const messageResponseError = this.createMessageResponseErrorInternal("UnknownTypePythonResponse")
+      return messageResponseError
     }
   }
 
@@ -53,11 +53,10 @@ export class FakeNewsDatabaseParser {
     }
   }
 
-  private createMessageResponseError(error: string): MessageResponseError {
-    const messageResponseError: MessageResponseError = {
+  private createMessageResponseErrorInternal(error: string): MessageResponseErrorInternal {
+    const messageResponseError: MessageResponseErrorInternal = {
       type: "Error",
-      errorType: "internal",
-      error: new Error(error)
+      errorInternal: {error: new Error(error)}
     }
     return messageResponseError
   }

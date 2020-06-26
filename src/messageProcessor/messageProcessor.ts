@@ -1,6 +1,7 @@
 import { MessageRequest } from "@/messageRequest/messageRequest"
 import { MessageResponse } from "@/messageResponse/messageResponse"
 import { Constructor } from "@/messageRouter/messageRouter"
+import { MessageResponseErrorInternal } from "@/messageResponse/messageResponseError"
 
 export interface MessageProcessorInterface {
   type: string
@@ -37,6 +38,13 @@ export class MessageProcessor {
     if (messageProcessor) {
       return await messageProcessor.processMessage(message)
     }
-    throw Error("Message processor not registered: " + message.type)
+    return this.getInvalidProcessorError(message.type)
+  }
+
+  private getInvalidProcessorError(type: string): MessageResponseErrorInternal {
+    return {
+      type: "Error",
+      errorInternal: {error: new Error("Message processor not registered: " + type)}
+    }
   }
 }
