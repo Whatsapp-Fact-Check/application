@@ -10,7 +10,7 @@ export type HttpData = FakeNewsDataBaseRequest
 export default class HttpRequest {
   public async post(url: string, data: HttpData): Promise<string | HttpError> {
     try {
-      const result = await axios.post(url, data, { timeout: 2000 })
+      const result = await axios.post(url, data, { timeout: 10000 })
       return this.responseParser(result)
     } catch (err) {
       return this.createHttpError(err.message)
