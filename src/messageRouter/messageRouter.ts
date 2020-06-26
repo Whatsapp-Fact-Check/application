@@ -5,6 +5,7 @@ import { MessageResponseErrorToNotifyUser, MessageResponseErrorInternal } from '
 import { messageRequestOrError } from '@/messageRequest/messageRequest'
 import { ErrorToNotifyUser } from '@/error/errorToNotifyUser'
 import { ErrorInternal } from '@/error/errorInternal'
+import { MessageSaver } from '../messageSaver/messageSaver'
 
 export type Constructor<T> = {
   new (...args: any[]): T
@@ -14,10 +15,12 @@ export type Constructor<T> = {
 export class MessageRouter {
   private messageProcessor: MessageProcessor
   private messageFormatter: MessageFormater
+  private messageSaver: MessageSaver
 
   constructor() {
     this.messageProcessor = new MessageProcessor()
     this.messageFormatter = new MessageFormater()
+    this.messageSaver = new MessageSaver()
   }
 
   public async processMessage(message: messageRequestOrError): Promise<string> {
@@ -27,7 +30,9 @@ export class MessageRouter {
     } else {
       result = await this.messageProcessor.processMessage(message)
     }
-    return this.format(result)
+    let formated = this.format(result)
+    this.messageSaver.saveMessage(message, result, formated)
+    return formated
   }
   
   private decideIfErrorIsInternalOrToNotify(message: ErrorToNotifyUser | ErrorInternal): MessageResponse {
