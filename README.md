@@ -1,6 +1,9 @@
 # WhatsApp Immediate Fact Check
 Checking COVID-19 facts in WhatsApp has never been so fast and easy. Just forward the news for us and we will check automatically if you should trust or not. Within seconds!
 
+![erro_msg jpeg](https://user-images.githubusercontent.com/17649711/86497465-2b553e80-bd58-11ea-960f-c6413639cf04.jpg)
+
+
 ## Inspiration
 Some weeks ago a good friend forwarded a message to me: Taking Ibuprofen seems to increase the chance that COVID-19 will develop more aggressive symptoms. The Medical University of Vienna was allegedly researching this, but results were not official yet. This message was meant to give an early warning.<br>
 I was unsure what to do with this... Was it a reasonable claim? Should I forward this to my family and friends to keep them from harm - just in case... ?
