@@ -1,4 +1,4 @@
-# Joâo
+# João
 João é uma ferramenta de pesquisa rápida no Whatsapp feita para lutar contra a desinformação e propagação de notícias falsas. Já sabemos que as famosas Fake News
 são um grande problema da sociedade contemporänea, podendo influenciar diretamente a opinião política dos indivíduos e, consequentemente na própria democracia.
 Atualmente, a questão é tão central que novos serviços especializados em julgar a veracidade de notícias surgiram - são as agências verificadoras de fatos. Tais organizações
