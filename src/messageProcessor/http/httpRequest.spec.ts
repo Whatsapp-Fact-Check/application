@@ -26,7 +26,7 @@ it("should call axios with defined url and data", async () => {
   )
 
   await httpRequestInstance.post("https://dbsamuca.com", pythonRequestTestData)
-  expect(spy).toHaveBeenCalledWith("https://dbsamuca.com", pythonRequestTestData, { timeout: 2000 }) //teste para testar envio do dado, se o axios recebe da forma correta do outro lado
+  expect(spy).toHaveBeenCalledWith("https://dbsamuca.com", pythonRequestTestData, { timeout: 10000 }) //teste para testar envio do dado, se o axios recebe da forma correta do outro lado
 })
 
 it("axios responding with null data should return HttpErrorObject stringified with NullAxiosResponse error field ", async () => {

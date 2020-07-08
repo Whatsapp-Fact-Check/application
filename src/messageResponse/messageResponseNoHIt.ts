@@ -1,6 +1,6 @@
 import { MessageResponse } from "../messageResponse/messageResponse"
 
-export interface News{
+export interface News {
   Title: string
   Date: string
   Source: string

@@ -4,7 +4,7 @@ import { MessageResponse } from "../../messageResponse/messageResponse"
 import { FakeNewsDatabaseParser } from "./fakeNewsDatabaseParser"
 import HttpRequest from "../http/httpRequest"
 import { MessageRequestText } from "../../messageRequest/messageRequestText"
-import { GoogleNewsParser } from './googleNewsParser'
+import { GoogleNewsParser } from "./googleNewsParser"
 
 export interface FakeNewsDataBaseRequest {
   text: string
@@ -13,7 +13,7 @@ export interface FakeNewsDataBaseRequest {
 @RegisterMessageProcessor
 export class MessageTextProcessor implements MessageProcessorInterface {
   type: string
-  
+
   private httpRequestClient: HttpRequest
   private pythonResponseParser: FakeNewsDatabaseParser
   private googleNewsParser: GoogleNewsParser
@@ -52,9 +52,10 @@ export class MessageTextProcessor implements MessageProcessorInterface {
   }
 
   private async searchGoogleNews(messageRequestText: MessageRequestText): Promise<MessageResponse> {
-    let url: string = this.googleNewsUrl + messageRequestText.text + this.googleNewsLanguage
+    const url: string = this.googleNewsUrl + messageRequestText.text + this.googleNewsLanguage
     const httpResponse = await this.httpRequestClient.get(url)
-    return await this.googleNewsParser.parseMessage(httpResponse)
+    const parsedMessage = await this.googleNewsParser.parseMessage(httpResponse)
+    return parsedMessage
   }
 
   private isMessageResponseNoHit(messageResponse: MessageResponse): boolean {

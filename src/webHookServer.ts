@@ -2,7 +2,7 @@ import express from "express"
 import bodyParser from "body-parser"
 import { MessageParser } from "./messageParser"
 import { MessageRouter } from "./messageRouter/messageRouter"
-import { TwilioFormater } from './messageFormater/twilioFormater'
+import { TwilioFormater } from "./messageFormater/twilioFormater"
 
 export class WebHookServer {
   private port: number
@@ -36,7 +36,7 @@ export class WebHookServer {
     })
 
     this.app.post("/wppMessage", async (req: any, res: any) => {
-      let parserType: string = "wpp"
+      const parserType = "wpp"
       let userResponse: string
 
       console.log("Received wpp msg request")
@@ -45,7 +45,8 @@ export class WebHookServer {
         userResponse = await this.messageRouter.processMessage(this.messageParser.parse(parserType, req.body))
         userResponse = this.twilioFormater.format(userResponse)
       } catch (error) {
-        userResponse = "Encontramos um problema interno ao processar sua requisição, estamos trabalhando para corrigir 👨‍💻"
+        userResponse =
+          "Encontramos um problema interno ao processar sua requisição, estamos trabalhando para corrigir 👨‍💻"
         userResponse = this.twilioFormater.format(userResponse)
         console.error(error)
       }
