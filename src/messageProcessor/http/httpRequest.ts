@@ -15,8 +15,15 @@ export default class HttpRequest {
     } catch (err) {
       return this.createHttpError(err.message)
     }
+  }
 
-    //still have to set timeout as a global constant
+  public async get(url: string): Promise<string | HttpError> {
+    try {
+      const result = await axios.get(url, { timeout: 10000 })
+      return this.responseParser(result)
+    } catch (err) {
+      return this.createHttpError(err.message)
+    }
   }
 
   private responseParser(response: AxiosResponse<any>): string | HttpError {
