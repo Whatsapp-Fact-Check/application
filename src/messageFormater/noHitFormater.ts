@@ -17,9 +17,12 @@ export class NoHitFormater implements MessageResponseFormater {
   formatMessage(message: MessageResponse): string {
     const messageResponseNoHit = this.toMessageResponseNoHit(message)
     let formattedNews
-    console.log("noHitFormater: " + JSON.stringify(messageResponseNoHit))
     if (this.hasRelatedNews(messageResponseNoHit)) {
       let formattedString =
+        this.bold +
+        "##Notícias Relacionadas##" +
+        this.bold +
+        this.doubleLine +
         "Infelizmente não conseguimos encontrar nenhuma checagem de fakeNews sobre o tema. Buscamos algumas notícias na internet relacionadas ao assunto que você pesquisou pra ver se ajuda. 👇 " +
         this.doubleLine
       if (messageResponseNoHit.relatedNews) {
