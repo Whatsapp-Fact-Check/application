@@ -17,6 +17,10 @@ export class HitFormater implements MessageResponseFormater {
     const messageResponseHit = this.toMessageResponseHit(message)
 
     const formattedString =
+      this.bold +
+      "##Checagem de FakeNews##" +
+      this.bold +
+      this.doubleLine +
       "Encontrei registro(s) sobre esse tema! A seguir separei os mais relevantes: " +
       this.doubleLine +
       messageResponseHit.hits.map((hit) => this.formatHit(hit)).join(this.doubleLine)

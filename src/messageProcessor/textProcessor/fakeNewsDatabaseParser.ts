@@ -2,9 +2,9 @@ import { MessageResponse } from "../../messageResponse/messageResponse"
 import { MessageResponseHit, HitResult } from "../../messageResponse/messageResponseHit"
 import { MessageResponseNoHit } from "../../messageResponse/messageResponseNoHIt"
 import { HttpError } from "../http/httpRequest"
-import { MessageResponseErrorInternal } from '@/messageResponse/messageResponseError'
+import { HttpParser } from '../http/httpParser'
 
-export class FakeNewsDatabaseParser {
+export class FakeNewsDatabaseParser extends HttpParser{
   parseMessage(response: string | HttpError): MessageResponse {
     if (this.isHttpError(response)) {
       const messageResponseError = this.createMessageResponseErrorInternal(response.error)
@@ -53,14 +53,6 @@ export class FakeNewsDatabaseParser {
     }
   }
 
-  private createMessageResponseErrorInternal(error: string): MessageResponseErrorInternal {
-    const messageResponseError: MessageResponseErrorInternal = {
-      type: "Error",
-      errorInternal: {error: new Error(error)}
-    }
-    return messageResponseError
-  }
-
   private isArrayHitResult(response: string): boolean {
     const parsed = JSON.parse(response)
     if (parsed instanceof Array) {
@@ -81,12 +73,5 @@ export class FakeNewsDatabaseParser {
     } else {
       return false
     }
-  }
-
-  private isHttpError(response: string | HttpError): response is HttpError {
-    if (response !== undefined && (response as HttpError).error) {
-      return true
-    }
-    return false
   }
 }
