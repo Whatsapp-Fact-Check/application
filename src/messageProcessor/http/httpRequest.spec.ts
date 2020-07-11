@@ -5,7 +5,20 @@ import { HttpError } from "../http/httpRequest"
 
 const httpRequestInstance = new HttpRequest()
 
-it("should return json with database response", async () => {
+it("get: should return Wpp Fact Check Server", async () => {
+  const expected = "Whatsapp Fact Check Server........................"
+  //setup
+  const spy = jest.spyOn(Axios, "get").mockImplementation((url, data) =>
+    Promise.resolve({
+      data: expected
+    })
+  )
+
+  const result = await httpRequestInstance.get("http://dbsamuca.com")
+  await expect(result).toStrictEqual(JSON.stringify(expected))
+})
+
+it("post: should return json with database response", async () => {
   //setup
   const spy = jest.spyOn(Axios, "post").mockImplementation((url, data) =>
     Promise.resolve({
@@ -17,7 +30,7 @@ it("should return json with database response", async () => {
   await expect(result).toStrictEqual(JSON.stringify(expectedTestHits))
 })
 
-it("should call axios with defined url and data", async () => {
+it("post: should call axios with defined url and data", async () => {
   //setup
   const spy = jest.spyOn(Axios, "post").mockImplementation((url, data, config) =>
     Promise.resolve({
@@ -29,7 +42,7 @@ it("should call axios with defined url and data", async () => {
   expect(spy).toHaveBeenCalledWith("https://dbsamuca.com", pythonRequestTestData, { timeout: 10000 }) //teste para testar envio do dado, se o axios recebe da forma correta do outro lado
 })
 
-it("axios responding with null data should return HttpErrorObject stringified with NullAxiosResponse error field ", async () => {
+it("post: axios responding with null data should return HttpErrorObject stringified with NullAxiosResponse error field ", async () => {
   //setup
   const expectedObject: HttpError = {
     error: "NullAxiosResponse"
@@ -41,7 +54,7 @@ it("axios responding with null data should return HttpErrorObject stringified wi
   await expect(result).toEqual(expectedObject)
 })
 
-it("axios responding with undefined should return HttpErrorObject stringified with UndefinedAxiosResponse error field", async () => {
+it("post: axios responding with undefined should return HttpErrorObject stringified with UndefinedAxiosResponse error field", async () => {
   //setup
 
   const expectedObject: HttpError = {
@@ -52,7 +65,7 @@ it("axios responding with undefined should return HttpErrorObject stringified wi
   await expect(result).toEqual(expectedObject)
 })
 
-it("axios responding with unexpected object should return  HttpErrorObject stringified with NoDataField error field", async () => {
+it("post: axios responding with unexpected object should return  HttpErrorObject stringified with NoDataField error field", async () => {
   //setup
 
   const expectedObject: HttpError = {
@@ -62,13 +75,3 @@ it("axios responding with unexpected object should return  HttpErrorObject strin
   const result = await httpRequestInstance.post("https://dbsamuca.com", pythonRequestTestData)
   await expect(result).toEqual(expectedObject)
 })
-// it("axios should throw timeout error after 2 seconds", async () => {
-//   //setup
-
-//   const expectedObject: HttpError = {
-//     error: "timeout of 2000ms exceeded"
-//   }
-//   jest.spyOn(Axios, "post").mockRestore()
-//   const result = await httpRequestInstance.post("https://dbsamuca.com", pythonRequestTestData)
-//   await expect(result).toEqual(expectedObject)
-// })
