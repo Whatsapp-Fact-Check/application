@@ -11,7 +11,7 @@ test("should return hit formatted string response", () => {
   }
   const instance = new HitFormater()
   const expected =
-    "Encontrei registro(s) sobre esse tema! A seguir separei os mais relevantes: \n\nFato verificado: *É Falso que Cuba desenvolveu vacina contra o coronavírus. Medicamentos cubanos têm sido utilizados para o tratamento de COVID-19 na China, mas não é uma vacina e a substância foi descoberta em outros lugares.*\nVerificado por: *Agência Lupa*\nData da verificação: *13/03/2020*\nLink: https://piaui.folha.uol.com.br/lupa/2020/03/13/verificamos-cuba-vacina-novo-coronavirus/"
+    "*##Checagem de FakeNews##*\n\nEncontrei registro(s) sobre esse tema! A seguir separei os mais relevantes: \n\nFato verificado: *É Falso que Cuba desenvolveu vacina contra o coronavírus. Medicamentos cubanos têm sido utilizados para o tratamento de COVID-19 na China, mas não é uma vacina e a substância foi descoberta em outros lugares.*\nVerificado por: *Agência Lupa*\nData da verificação: *13/03/2020*\nLink: https://piaui.folha.uol.com.br/lupa/2020/03/13/verificamos-cuba-vacina-novo-coronavirus/"
   expect(instance.formatMessage(messageResponse)).toStrictEqual(expected)
 })
 
@@ -32,7 +32,7 @@ test("should return hit formatted string response without date field", () => {
   }
   const instance = new HitFormater()
   const expected =
-    "Encontrei registro(s) sobre esse tema! A seguir separei os mais relevantes: \n\nFato verificado: *É Falso que Cuba desenvolveu vacina contra o coronavírus. Medicamentos cubanos têm sido utilizados para o tratamento de COVID-19 na China, mas não é uma vacina e a substância foi descoberta em outros lugares.*\nVerificado por: *Agência Lupa*\nLink: https://piaui.folha.uol.com.br/lupa/2020/03/13/verificamos-cuba-vacina-novo-coronavirus/"
+    "*##Checagem de FakeNews##*\n\nEncontrei registro(s) sobre esse tema! A seguir separei os mais relevantes: \n\nFato verificado: *É Falso que Cuba desenvolveu vacina contra o coronavírus. Medicamentos cubanos têm sido utilizados para o tratamento de COVID-19 na China, mas não é uma vacina e a substância foi descoberta em outros lugares.*\nVerificado por: *Agência Lupa*\nLink: https://piaui.folha.uol.com.br/lupa/2020/03/13/verificamos-cuba-vacina-novo-coronavirus/"
   expect(instance.formatMessage(messageResponse)).toStrictEqual(expected)
 })
 
@@ -53,6 +53,6 @@ test("should return hit formatted string response, receiving entries with space"
   }
   const instance = new HitFormater()
   const expected =
-    "Encontrei registro(s) sobre esse tema! A seguir separei os mais relevantes: \n\nFato verificado: *É Falso que Cuba desenvolveu vacina contra o coronavírus. Medicamentos cubanos têm sido utilizados para o tratamento de COVID-19 na China, mas não é uma vacina e a substância foi descoberta em outros lugares.*\nVerificado por: *Agência Lupa*\nData da verificação: *13/03/2020*\nLink: https://piaui.folha.uol.com.br/lupa/2020/03/13/verificamos-cuba-vacina-novo-coronavirus/"
+    "*##Checagem de FakeNews##*\n\nEncontrei registro(s) sobre esse tema! A seguir separei os mais relevantes: \n\nFato verificado: *É Falso que Cuba desenvolveu vacina contra o coronavírus. Medicamentos cubanos têm sido utilizados para o tratamento de COVID-19 na China, mas não é uma vacina e a substância foi descoberta em outros lugares.*\nVerificado por: *Agência Lupa*\nData da verificação: *13/03/2020*\nLink: https://piaui.folha.uol.com.br/lupa/2020/03/13/verificamos-cuba-vacina-novo-coronavirus/"
   expect(instance.formatMessage(messageResponse)).toStrictEqual(expected)
 })

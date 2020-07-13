@@ -28,7 +28,7 @@ test("should return related news response", () => {
     }
   ]
 
-  const expected = "Infelizmente não conseguimos encontrar nenhuma checagem de" +
+  const expected = "*##Notícias Relacionadas##*\n\nInfelizmente não conseguimos encontrar nenhuma checagem de" +
   " fakeNews sobre o tema, mas buscamos algumas notícias na internet relacionadas ao assunto que você pesquisou 👇\n\n" +
   formatNews(news[0])
 
