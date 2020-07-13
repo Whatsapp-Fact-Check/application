@@ -23,20 +23,13 @@ export class NoHitFormater implements MessageResponseFormater {
         "##Notícias Relacionadas##" +
         this.bold +
         this.doubleLine +
-        "Infelizmente não conseguimos encontrar nenhuma checagem de fakeNews sobre o tema. Buscamos algumas notícias na internet relacionadas ao assunto que você pesquisou pra ver se ajuda. 👇 " +
+        "Infelizmente não conseguimos encontrar nenhuma checagem de fakeNews sobre o tema, mas buscamos algumas notícias na internet relacionadas ao assunto que você pesquisou 👇" +
         this.doubleLine
-      if (messageResponseNoHit.relatedNews) {
-        formattedNews = messageResponseNoHit.relatedNews.map((news) => this.formatNews(news)).join(this.doubleLine)
-      } else {
-        // deu merda no relatedNews
-        return (
-          "Não encontramos nada correspondente 😓\n\n" +
-          "Tente mandar de novo mudando um pouco a frase, usando sinônimos... Pode ser que isso ajude a gente a encontrar!"
-        )
-      }
-
+        
+      formattedNews = messageResponseNoHit.relatedNews?.map((news) => this.formatNews(news)).join(this.doubleLine)
       formattedString += formattedNews
       return formattedString
+      
     } else {
       return (
         "Não encontramos nada correspondente 😓\n\n" +
