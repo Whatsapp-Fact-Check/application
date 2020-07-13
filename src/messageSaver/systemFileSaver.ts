@@ -3,12 +3,11 @@ import { ErrorInternal } from "@/error/errorInternal"
 import * as fs from "fs"
 
 export class SystemFileSaver implements MessageSaverInterface {
-  private filename = "./savedMessages.txt"
+  private filename = "../savedMessages.txt"
   constructor() {}
 
   save(data: string): Promise<saveMessageResponse> {
     return new Promise<saveMessageResponse>((resolve, reject) => {
-
       fs.appendFile(this.filename, data, (err) => {
         if (err) {
           const internalError: ErrorInternal = {
@@ -18,7 +17,6 @@ export class SystemFileSaver implements MessageSaverInterface {
         }
         resolve(true)
       })
-      
     })
   }
 }
