@@ -44,18 +44,19 @@ export class GoogleNewsParser extends HttpParser {
 
         const parsedItems = result.rss.channel[0].item
         const news: News[] = this.parseNews(parsedItems)
-
-        console.log(news)
         resolve(news)
       })
     })
   }
 
   private parseNews(parsedItems: any): Array<News> {
-    const news: News[] = new Array<News>()
+    let news: News[] = new Array<News>()
 
-    const numNews = 3
+    if (parsedItems == undefined){
+      return news
+    }
 
+    const numNews = Math.min(parsedItems.length, 3)
     for (let index = 0; index < numNews; index++) {
       const element = parsedItems[index]
       let title = element.title[0]
@@ -72,6 +73,7 @@ export class GoogleNewsParser extends HttpParser {
         Source: source
       })
     }
+    
     return news
   }
 
