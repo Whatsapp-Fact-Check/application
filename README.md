@@ -17,24 +17,25 @@ são: análise de imagens, análise de domínio ao receber um link, entre outras
 
 O primeiro contato com a ferramenta deve partir do usuário, que envia uma mensagem a fim de se cadastrar no serviço.
 
-![join_msg jpeg](https://user-images.githubusercontent.com/17649711/86497661-e1b92380-bd58-11ea-8575-7c29584e9d62.jpg)
+<img src="https://user-images.githubusercontent.com/17649711/86497661-e1b92380-bd58-11ea-8575-7c29584e9d62.jpg" width="375" height="667">\
 
 A partir desse momento, a interação deve partir outra vez de quem está utilizando. O único tipo de dado aceito atualmente é texto, qualquer outro tipo não será processado. Ao
 enviar um texto, uma busca é feita e retorna respostas com links para as verificaçõesencontradas no banco de dados.
 
-<img src="https://user-images.githubusercontent.com/17649711/86497675-ed0c4f00-bd58-11ea-834b-9b638126a7f0.jpg" width="375" height="667">
+<img src="https://user-images.githubusercontent.com/17649711/86497675-ed0c4f00-bd58-11ea-834b-9b638126a7f0.jpg" width="375" height="667">\
 
 Caso não encontre nenhuma verificação relacionada ao texto enviado, uma reformulação na entrada do usuário é sugerida.
 
-![nohit_msg jpeg](https://user-images.githubusercontent.com/17649711/86497601-b7676600-bd58-11ea-82db-408fe57b630e.jpg)
+<img src="https://user-images.githubusercontent.com/17649711/86497601-b7676600-bd58-11ea-82db-408fe57b630e.jpg" width="375" height="667">\
 
 Em casos de erro, em que a plataforma encontrou algum problema para processar o pedido do usuário, envia-se uma mensagem evidenciando o problema.
 
-![erro_msg jpeg](https://user-images.githubusercontent.com/17649711/86497465-2b553e80-bd58-11ea-960f-c6413639cf04.jpg)
+<img src="https://user-images.githubusercontent.com/17649711/86497465-2b553e80-bd58-11ea-960f-c6413639cf04.jpg" width="375" height="667">\
 
 Para retirar-se do serviço, o usuário basicamente deve enviar uma mensagem de stop e será descadastrado. A partir desse momento, as requisições já não são processadas
 
-![stop_msg jpeg](https://user-images.githubusercontent.com/17649711/86497630-ce0dbd00-bd58-11ea-85d2-bcb9d56a4c97.jpg)
+<img src="https://user-images.githubusercontent.com/17649711/86497630-ce0dbd00-bd58-11ea-85d2-bcb9d56a4c97.jpg" width="375" height="667">\
+
 
 ## Porque confiar em nossas fontes?
 
