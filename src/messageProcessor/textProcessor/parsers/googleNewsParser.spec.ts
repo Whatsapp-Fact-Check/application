@@ -2,7 +2,7 @@ import { GoogleNewsParser } from "./googleNewsParser"
 import { MessageResponseNoHit, News } from "@/messageResponse/messageResponseNoHIt"
 import { MessageResponseHit } from "@/messageResponse/messageResponseHit"
 import { MessageResponseErrorInternal } from "@/messageResponse/messageResponseError"
-import { HttpError } from "../http/httpRequest"
+import { HttpError } from "../../http/httpRequest"
 
 const newsWith3Items: Array<News> = [
   {

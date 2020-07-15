@@ -1,10 +1,10 @@
 import { MessageProcessorInterface, RegisterMessageProcessor } from "../messageProcessor"
 import { MessageRequest } from "../..//messageRequest/messageRequest"
 import { MessageResponse } from "../../messageResponse/messageResponse"
-import { FakeNewsDatabaseParser } from "./fakeNewsDatabaseParser"
+import { FakeNewsDatabaseParser } from "./parsers/fakeNewsDatabaseParser"
 import HttpRequest from "../http/httpRequest"
 import { MessageRequestText } from "../../messageRequest/messageRequestText"
-import { GoogleNewsParser } from "./googleNewsParser"
+import { GoogleNewsParser } from "./parsers/googleNewsParser"
 
 export interface FakeNewsDataBaseRequest {
   text: string
