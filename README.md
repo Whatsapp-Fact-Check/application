@@ -22,7 +22,7 @@ O primeiro contato com a ferramenta deve partir do usuário, que envia uma mensa
 A partir desse momento, a interação deve partir outra vez de quem está utilizando. O único tipo de dado aceito atualmente é texto, qualquer outro tipo não será processado. Ao
 enviar um texto, uma busca é feita e retorna respostas com links para as verificaçõesencontradas no banco de dados.
 
-![hit_msg jpeg](https://user-images.githubusercontent.com/17649711/86497675-ed0c4f00-bd58-11ea-834b-9b638126a7f0.jpg =375x667)
+<img src="https://user-images.githubusercontent.com/17649711/86497675-ed0c4f00-bd58-11ea-834b-9b638126a7f0.jpg" width="375" height="667">
 
 Caso não encontre nenhuma verificação relacionada ao texto enviado, uma reformulação na entrada do usuário é sugerida.
 
