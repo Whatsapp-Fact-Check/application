@@ -1,8 +1,8 @@
-import { MessageResponse } from "../../messageResponse/messageResponse"
-import { MessageResponseHit, HitResult } from "../../messageResponse/messageResponseHit"
-import { MessageResponseNoHit } from "../../messageResponse/messageResponseNoHIt"
-import { HttpError } from "../http/httpRequest"
-import { HttpParser } from '../http/httpParser'
+import { MessageResponse } from "../../../messageResponse/messageResponse"
+import { MessageResponseHit, HitResult } from "../../../messageResponse/messageResponseHit"
+import { MessageResponseNoHit } from "../../../messageResponse/messageResponseNoHIt"
+import { HttpError } from "../../http/httpRequest"
+import { HttpParser } from '../../http/httpParser'
 
 export class FakeNewsDatabaseParser extends HttpParser{
   parseMessage(response: string | HttpError): MessageResponse {
