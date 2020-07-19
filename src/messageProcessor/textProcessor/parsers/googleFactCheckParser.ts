@@ -2,8 +2,8 @@ import { HttpError } from "@/messageProcessor/http/httpRequest"
 import { MessageResponse } from "@/messageResponse/messageResponse"
 import { HttpParser } from "../../http/httpParser"
 import { HitResult, MessageResponseHit } from "@/messageResponse/messageResponseHit"
-import { MessageResponseNoHit } from '@/messageResponse/messageResponseNoHIt'
-import { GoogleFactCheckFilter } from './googleFactCheckFilter'
+import { MessageResponseNoHit } from "@/messageResponse/messageResponseNoHIt"
+import { GoogleFactCheckFilter } from "./googleFactCheckFilter"
 
 export interface claim {
   text: string
@@ -12,16 +12,16 @@ export interface claim {
   claimReview: claimReview[]
 }
 
-export interface claimReview{
-    publisher: {
-      name: string
-      site: string
-    }
-    url: string
-    title?: string
-    reviewDate: string
-    textualRating: string
-    languageCode: string
+export interface claimReview {
+  publisher: {
+    name: string
+    site: string
+  }
+  url: string
+  title?: string
+  reviewDate: string
+  textualRating: string
+  languageCode: string
 }
 
 export interface GoogleFactCheckResponse {
@@ -29,7 +29,6 @@ export interface GoogleFactCheckResponse {
 }
 
 export class GoogleFactCheckParser extends HttpParser {
-
   private dateTranslationMap: Map<string, string> = new Map()
   private factCheckFilter: GoogleFactCheckFilter = new GoogleFactCheckFilter()
 
@@ -65,24 +64,35 @@ export class GoogleFactCheckParser extends HttpParser {
   }
 
   private getMessageResponse(factCheckResponse: any): MessageResponse {
-    if (this.isEmptyResponse(factCheckResponse)){
-      const messageResponseNoHit: MessageResponseNoHit = {
-        type: "NoHit"
-      }
-      return messageResponseNoHit
+    if (this.isEmptyResponse(factCheckResponse)) {
+      return this.getMessageResponseNoHit()
     }
 
     if (!this.isGoogleFactCheckResponse(factCheckResponse)) {
-      const messageResponseError = this.createMessageResponseErrorInternal("Invalid Response Body from Google Fact Check")
+      const messageResponseError = this.createMessageResponseErrorInternal(
+        "Invalid Response Body from Google Fact Check"
+      )
       return messageResponseError
     }
 
     const hits = this.claimsToHits(factCheckResponse as GoogleFactCheckResponse)
-    const messageResponseHit: MessageResponseHit = {
-      type: "Hit",
-      hits: hits
+
+    if (hits.length == 0) {
+      return this.getMessageResponseNoHit() //this case occurs when all the news does not have title
+    } else {
+      const messageResponseHit: MessageResponseHit = {
+        type: "Hit",
+        hits: hits
+      }
+      return messageResponseHit
     }
-    return messageResponseHit
+  }
+
+  private getMessageResponseNoHit(): MessageResponse {
+    const messageResponseNoHit: MessageResponseNoHit = {
+      type: "NoHit"
+    }
+    return messageResponseNoHit
   }
 
   private isEmptyResponse(response: any): boolean {
@@ -98,7 +108,7 @@ export class GoogleFactCheckParser extends HttpParser {
 
     factCheckResponse.claims.forEach((claim: claim) => {
       claim.claimReview.forEach((claimReview: claimReview) => {
-        if (this.hasTitle(claimReview)){
+        if (this.hasTitle(claimReview)) {
           hits.push({
             Checado: claimReview.title as string,
             Checado_por: claimReview.publisher.name,
@@ -112,12 +122,12 @@ export class GoogleFactCheckParser extends HttpParser {
     return this.factCheckFilter.filterFactCheckHits(hits)
   }
 
-  private hasTitle(claimReview: claimReview) : boolean{
+  private hasTitle(claimReview: claimReview): boolean {
     return "title" in claimReview
   }
 
-  private formatDate(date: string) :string{
-    let words = date.substring(0,10).split("-")
+  private formatDate(date: string): string {
+    let words = date.substring(0, 10).split("-")
     return words[2] + " " + this.dateTranslationMap.get(words[1]) + " " + words[0]
   }
 
