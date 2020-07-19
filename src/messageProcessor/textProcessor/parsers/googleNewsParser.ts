@@ -5,8 +5,23 @@ import { MessageResponseNoHit, News } from "@/messageResponse/messageResponseNoH
 const parseString = require("xml2js").parseString
 
 export class GoogleNewsParser extends HttpParser {
+
+  private dateTranslationMap: Map<string, string> = new Map()
+
   constructor() {
     super()
+    this.dateTranslationMap.set("Jan", "Janeiro")
+    this.dateTranslationMap.set("Feb", "Fevereiro")
+    this.dateTranslationMap.set("Mar", "Março")
+    this.dateTranslationMap.set("Apr", "Abril")
+    this.dateTranslationMap.set("May", "Maio")
+    this.dateTranslationMap.set("Jun", "Junho")
+    this.dateTranslationMap.set("Jul", "Julho")
+    this.dateTranslationMap.set("Aug", "Agosto")
+    this.dateTranslationMap.set("Sep", "Setembro")
+    this.dateTranslationMap.set("Oct", "Outubro")
+    this.dateTranslationMap.set("Nov", "Novembro")
+    this.dateTranslationMap.set("Dec", "Dezembro")
   }
 
   async parseMessage(response: string | HttpError): Promise<MessageResponse> {
@@ -52,7 +67,7 @@ export class GoogleNewsParser extends HttpParser {
   private parseNews(parsedItems: any): Array<News> {
     let news: News[] = new Array<News>()
 
-    if (parsedItems == undefined){
+    if (parsedItems == undefined) {
       return news
     }
 
@@ -73,7 +88,7 @@ export class GoogleNewsParser extends HttpParser {
         Source: source
       })
     }
-    
+
     return news
   }
 
@@ -91,24 +106,6 @@ export class GoogleNewsParser extends HttpParser {
   }
 
   private getPortugueseDate(date: string): string {
-    const dateTranslationMap = this.setDateTranslationMap()
-    return dateTranslationMap.get(date) as string
-  }
-
-  private setDateTranslationMap(): Map<string, string> {
-    const dateTranslationMap = new Map()
-    dateTranslationMap.set("Jan", "Janeiro")
-    dateTranslationMap.set("Feb", "Fevereiro")
-    dateTranslationMap.set("Mar", "Março")
-    dateTranslationMap.set("Apr", "Abril")
-    dateTranslationMap.set("May", "Maio")
-    dateTranslationMap.set("Jun", "Junho")
-    dateTranslationMap.set("Jul", "Julho")
-    dateTranslationMap.set("Aug", "Agosto")
-    dateTranslationMap.set("Sep", "Setembro")
-    dateTranslationMap.set("Oct", "Outubro")
-    dateTranslationMap.set("Nov", "Novembro")
-    dateTranslationMap.set("Dec", "Dezembro")
-    return dateTranslationMap
+    return this.dateTranslationMap.get(date) as string
   }
 }
