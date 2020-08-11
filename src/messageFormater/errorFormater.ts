@@ -43,7 +43,7 @@ export class ErrorFormater implements MessageResponseFormater {
   }
 
   private isMessageResponseErrorInternal(message: MessageResponse): message is MessageResponseErrorInternal {
-    return "error" in message
+    return "errorInternal" in message
   }
 
   private isMessageResponseErrorToNotifyUser(message: MessageResponse): message is MessageResponseErrorToNotifyUser {
