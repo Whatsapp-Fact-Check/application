@@ -34,16 +34,20 @@ export class MessageTextProcessor implements MessageProcessorInterface {
     this.googleFactCheckParser = new GoogleFactCheckParser()
   }
 
-  async processMessage(message: MessageRequest): Promise<MessageResponse> {
+  processMessage(message: MessageRequest): Promise<MessageResponse> {
     return new Promise<MessageResponse>(async (resolve, reject) => {
       const messageRequestText = this.toMessageRequestText(message)
 
-      let messageResponse = await this.searchGoogleFactCheck(messageRequestText)
-      if (this.isMessageResponseNoHit(messageResponse)) {
-        messageResponse = await this.searchGoogleNews(messageRequestText)
+      try {
+        let messageResponse = await this.searchGoogleFactCheck(messageRequestText)
+        if (this.isMessageResponseNoHit(messageResponse)) {
+          messageResponse = await this.searchGoogleNews(messageRequestText)
+        }
+        resolve(messageResponse)
+      } catch (error) {
+        reject(error)
       }
-
-      resolve(messageResponse)
+      
     })
   }
 
