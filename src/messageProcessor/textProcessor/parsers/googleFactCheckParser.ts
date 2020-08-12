@@ -108,7 +108,7 @@ export class GoogleFactCheckParser extends HttpParser {
 
     factCheckResponse.claims.forEach((claim: claim) => {
       claim.claimReview.forEach((claimReview: claimReview) => {
-        if (this.hasTitle(claimReview)) {
+        if (this.claimHasAllProperties(claimReview)) {
           hits.push({
             Checado: claimReview.title as string,
             Checado_por: claimReview.publisher.name,
@@ -122,8 +122,14 @@ export class GoogleFactCheckParser extends HttpParser {
     return this.factCheckFilter.filterFactCheckHits(hits)
   }
 
-  private hasTitle(claimReview: claimReview): boolean {
-    return "title" in claimReview
+  private claimHasAllProperties(claimReview: claimReview): boolean {
+    return (
+      "title" in claimReview &&
+      "publisher" in claimReview &&
+      "name" in claimReview.publisher &&
+      "reviewDate" in claimReview &&
+      "url" in claimReview
+    )
   }
 
   private formatDate(date: string): string {
