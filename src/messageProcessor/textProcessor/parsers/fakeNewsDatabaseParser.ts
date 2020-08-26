@@ -34,7 +34,7 @@ export class FakeNewsDatabaseParser extends HttpParser{
   }
 
   private getMessageResponse(response: string): MessageResponse {
-    const hits = JSON.parse(response)
+    let hits = JSON.parse(response)
     if (hits.length === 0) {
       //significa que n houve hit
       const messageResponseNoHit: MessageResponseNoHit = {
@@ -44,7 +44,7 @@ export class FakeNewsDatabaseParser extends HttpParser{
       return messageResponseNoHit as MessageResponse
     } else {
       //significa q houve hits
-
+      hits = hits.slice(0, Math.min(hits.length, 3))
       const messageResponseHit: MessageResponseHit = {
         type: "Hit",
         hits: hits
