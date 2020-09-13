@@ -18,8 +18,7 @@ export class HitFormater implements MessageResponseFormater {
 
     const formattedString =
       this.bold +
-      "##Checagem de FakeNews##" +
-      this.bold +
+      "Checagem de Fake News" + this.bold + " ✅" +
       this.doubleLine +
       "Encontrei registro(s) sobre esse tema! A seguir separei os mais relevantes: " +
       this.doubleLine +
