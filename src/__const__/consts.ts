@@ -1,7 +1,6 @@
-import { DataBaseRequest } from "../messageProcessor/textProcessor/messageTextProcessor"
 import { HitResult } from "@/messageResponse/messageResponseHit"
 
-export const pythonRequestTestData: DataBaseRequest = {
+export const pythonRequestTestData = {
   text: "bolsonaro fake news"
 }
 export const expectedTestHits: Array<HitResult> = [
