@@ -1,7 +1,9 @@
-import HttpRequest from '../../../messageProcessor/http/httpRequest'
-import { FakeNewsDatabaseParser } from '../parsers/fakeNewsDatabaseParser'
-import { GoogleFactCheckParser } from '../parsers/googleFactCheckParser'
-import { MessageResponse } from '@/messageResponse/messageResponse'
+import HttpRequest from "../../../messageProcessor/http/httpRequest"
+import { FakeNewsDatabaseParser } from "../parsers/fakeNewsDatabaseParser"
+import { GoogleFactCheckParser } from "../parsers/googleFactCheckParser"
+import { MessageResponse } from "@/messageResponse/messageResponse"
+import { HitResult, MessageResponseHit } from "@/messageResponse/messageResponseHit"
+import { MessageResponseNoHit } from "@/messageResponse/messageResponseNoHIt"
 
 export class FactCheckSearcher {
   private databaseUrl = "http://34.94.124.1:8080/checagem"
@@ -19,9 +21,18 @@ export class FactCheckSearcher {
 
   public async searchFactChecks(text: string): Promise<MessageResponse> {
     let messageResponseDatabase, messageResponseGoogle: MessageResponse
-    // messageResponseDatabase = await this.searchFakeNewsDatabase(text)
+
+    messageResponseDatabase = await this.searchFakeNewsDatabase(text)
+    if (this.isMessageResponseError(messageResponseDatabase)) {
+      return messageResponseDatabase
+    }
+
     messageResponseGoogle = await this.searchGoogleFactCheck(text)
-    return messageResponseGoogle
+    if (this.isMessageResponseError(messageResponseGoogle)) {
+      return messageResponseGoogle
+    }
+
+    return this.concatenateResults(messageResponseDatabase, messageResponseGoogle)
   }
 
   private async searchGoogleFactCheck(text: string): Promise<MessageResponse> {
@@ -44,6 +55,29 @@ export class FactCheckSearcher {
 
     const httpResponse = await this.httpRequestClient.post(this.databaseUrl, data)
     return this.fakeNewsDatabaseParser.parseMessage(httpResponse)
+  }
+
+  private concatenateResults(
+    databaseResponse: MessageResponseHit | MessageResponseNoHit,
+    googleResponse: MessageResponseHit | MessageResponseNoHit
+  ): MessageResponseHit | MessageResponseNoHit {
+    if (this.isMessageResponseNoHit(databaseResponse) && this.isMessageResponseNoHit(googleResponse)) {
+      return googleResponse
+    } else if (!this.isMessageResponseNoHit(databaseResponse) && this.isMessageResponseNoHit(googleResponse)) {
+      return databaseResponse
+    } else if (this.isMessageResponseNoHit(databaseResponse) && !this.isMessageResponseNoHit(googleResponse)) {
+      return googleResponse
+    } else {
+      //both are MessageResponseHit
+      let databaseResponseCopy = databaseResponse as MessageResponseHit
+      let googleResponseCopy = googleResponse as MessageResponseHit
+
+      //add first factcheck of database response in the google response
+      let firstDatabaseFactCheck: HitResult = (databaseResponseCopy.hits)[0]
+      googleResponseCopy.hits.unshift(firstDatabaseFactCheck)
+      googleResponseCopy.hits = googleResponseCopy.hits.slice(0, Math.min(googleResponseCopy.hits.length, 3))
+      return googleResponseCopy
+    }
   }
 
   private isMessageResponseNoHit(messageResponse: MessageResponse): boolean {

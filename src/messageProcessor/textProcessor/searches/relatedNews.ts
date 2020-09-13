@@ -21,18 +21,17 @@ export class RelatedNewsSearcher {
   public async searchRelatedNews(text: string): Promise<MessageResponse> {
     let messageResponseDatabase, messageResponseGoogle: MessageResponse
 
-    // messageResponseDatabase = await this.searchRelatedNewsDatabase(text)
-    // if (this.isMessageResponseError(messageResponseDatabase)) {
-    //   return messageResponseDatabase
-    // }
+    messageResponseDatabase = await this.searchRelatedNewsDatabase(text)
+    if (this.isMessageResponseError(messageResponseDatabase)) {
+      return messageResponseDatabase
+    }
 
     messageResponseGoogle = await this.searchGoogleNews(text)
     if (this.isMessageResponseError(messageResponseGoogle)) {
       return messageResponseGoogle
     }
 
-    return messageResponseGoogle
-    // return this.concatenateResults(messageResponseDatabase, messageResponseGoogle)
+    return this.concatenateResults(messageResponseDatabase, messageResponseGoogle)
   }
 
   private async searchRelatedNewsDatabase(text: string): Promise<MessageResponse> {
@@ -55,20 +54,19 @@ export class RelatedNewsSearcher {
     databaseResponse: MessageResponseNoHit,
     googleResponse: MessageResponseNoHit
   ): MessageResponseNoHit {
-    if ("relatedNews" in databaseResponse && !("relatedNews" in googleResponse)) {
+    if (!("relatedNews" in databaseResponse) && !("relatedNews" in googleResponse)) {
+      return googleResponse
+    } else if ("relatedNews" in databaseResponse && !("relatedNews" in googleResponse)) {
       return databaseResponse
     } else if (!("relatedNews" in databaseResponse) && "relatedNews" in googleResponse) {
       return googleResponse
     } else {
+      //add first news of database response in the google response
       let firstDatabaseNews: News = (databaseResponse.relatedNews as News[])[0]
       googleResponse.relatedNews?.unshift(firstDatabaseNews)
       googleResponse.relatedNews = googleResponse.relatedNews?.slice(0, Math.min(googleResponse.relatedNews?.length, 3))
       return googleResponse
     }
-  }
-
-  private isMessageResponseNoHit(messageResponse: MessageResponse): boolean {
-    return messageResponse.type == "NoHit"
   }
 
   private isMessageResponseError(messageResponse: MessageResponse): boolean {
