@@ -1,7 +1,7 @@
 import { HttpError } from "@/messageProcessor/http/httpRequest"
 import { MessageResponse } from "@/messageResponse/messageResponse"
 import { HttpParser } from "../../http/httpParser"
-import { HitResult, MessageResponseHit } from "@/messageResponse/messageResponseHit"
+import { CheckedFact, MessageResponseCheckedFacts } from "@/messageResponse/MessageResponseCheckedFacts"
 import { MessageResponseNoHit } from "@/messageResponse/messageResponseNoHIt"
 import { GoogleFactCheckFilter } from "./googleFactCheckFilter"
 
@@ -75,16 +75,16 @@ export class GoogleFactCheckParser extends HttpParser {
       return messageResponseError
     }
 
-    const hits = this.claimsToHits(factCheckResponse as GoogleFactCheckResponse)
+    const checkedFacts = this.claimsToCheckedFacts(factCheckResponse as GoogleFactCheckResponse)
 
-    if (hits.length == 0) {
+    if (checkedFacts.length == 0) {
       return this.getMessageResponseNoHit() //this case occurs when all the news does not have title
     } else {
-      const messageResponseHit: MessageResponseHit = {
-        type: "Hit",
-        hits: hits
+      const messageResponseCheckedFact: MessageResponseCheckedFacts = {
+        type: "CheckedFact",
+        checkedFacts: checkedFacts
       }
-      return messageResponseHit
+      return messageResponseCheckedFact
     }
   }
 
@@ -103,13 +103,13 @@ export class GoogleFactCheckParser extends HttpParser {
     return "claims" in response && "claimReview" in response.claims[0] //sanity check: just to be sure there is at least one claimReview
   }
 
-  private claimsToHits(factCheckResponse: GoogleFactCheckResponse): Array<HitResult> {
-    let hits = new Array<HitResult>()
+  private claimsToCheckedFacts(factCheckResponse: GoogleFactCheckResponse): Array<CheckedFact> {
+    let checkedFacts = new Array<CheckedFact>()
 
     factCheckResponse.claims.forEach((claim: claim) => {
       claim.claimReview.forEach((claimReview: claimReview) => {
         if (this.claimHasAllProperties(claimReview)) {
-          hits.push({
+          checkedFacts.push({
             Checado: claimReview.title as string,
             Checado_por: claimReview.publisher.name,
             Data: this.formatDate(claimReview.reviewDate),
@@ -119,7 +119,7 @@ export class GoogleFactCheckParser extends HttpParser {
       })
     })
 
-    return this.factCheckFilter.filterFactCheckHits(hits)
+    return this.factCheckFilter.filterFactCheckHits(checkedFacts)
   }
 
   private claimHasAllProperties(claimReview: claimReview): boolean {

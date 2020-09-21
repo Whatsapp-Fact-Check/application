@@ -1,32 +1,31 @@
-import { HitResult } from '@/messageResponse/messageResponseHit';
+import { CheckedFact } from '@/messageResponse/MessageResponseCheckedFacts';
 
 export class GoogleFactCheckFilter{
     constructor() {
         
     }
 
-    filterFactCheckHits(hits: HitResult[]) : HitResult[] {
-        return this.removeRepeatedHits(hits)
-
+    filterFactCheckHits(checkedFacts: CheckedFact[]) : CheckedFact[] {
+        return this.removeRepeated(checkedFacts)
     }
     
-    private removeRepeatedHits(hits: HitResult[]): HitResult[] {
-        let filteredHits: HitResult[] = []
+    private removeRepeated(checkedFacts: CheckedFact[]): CheckedFact[] {
+        let filteredCheckedFacts: CheckedFact[] = []
 
-        for (let index = 0; index < hits.length && filteredHits.length < 3; index++) {
-            let hit = hits[index];
-            if (!this.isRepeated(filteredHits, hit)){
-                filteredHits.push(hit)
+        for (let index = 0; index < checkedFacts.length && filteredCheckedFacts.length < 3; index++) {
+            let checkedFact = checkedFacts[index];
+            if (!this.isRepeated(filteredCheckedFacts, checkedFact)){
+                filteredCheckedFacts.push(checkedFact)
             }
         }
 
-        return filteredHits
+        return filteredCheckedFacts
     }
     
-    private isRepeated(filteredHits: HitResult[], hit: HitResult) : boolean {
-        for (let index = 0; index < filteredHits.length; index++) {
-            let elem = filteredHits[index];
-            if (elem.Checado == hit.Checado){
+    private isRepeated(filteredCheckedFacts: CheckedFact[], checkedFact: CheckedFact) : boolean {
+        for (let index = 0; index < filteredCheckedFacts.length; index++) {
+            let elem = filteredCheckedFacts[index];
+            if (elem.Checado == checkedFact.Checado){
                 return true
             }
         }

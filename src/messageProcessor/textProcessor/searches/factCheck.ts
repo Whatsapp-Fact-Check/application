@@ -2,7 +2,7 @@ import HttpRequest from "../../../messageProcessor/http/httpRequest"
 import { FakeNewsDatabaseParser } from "../parsers/fakeNewsDatabaseParser"
 import { GoogleFactCheckParser } from "../parsers/googleFactCheckParser"
 import { MessageResponse } from "@/messageResponse/messageResponse"
-import { HitResult, MessageResponseHit } from "@/messageResponse/messageResponseHit"
+import { CheckedFact, MessageResponseCheckedFacts } from "@/messageResponse/MessageResponseCheckedFacts"
 import { MessageResponseNoHit } from "@/messageResponse/messageResponseNoHIt"
 
 export class FactCheckSearcher {
@@ -58,9 +58,9 @@ export class FactCheckSearcher {
   }
 
   private concatenateResults(
-    databaseResponse: MessageResponseHit | MessageResponseNoHit,
-    googleResponse: MessageResponseHit | MessageResponseNoHit
-  ): MessageResponseHit | MessageResponseNoHit {
+    databaseResponse: MessageResponseCheckedFacts | MessageResponseNoHit,
+    googleResponse: MessageResponseCheckedFacts | MessageResponseNoHit
+  ): MessageResponseCheckedFacts | MessageResponseNoHit {
     if (this.isMessageResponseNoHit(databaseResponse) && this.isMessageResponseNoHit(googleResponse)) {
       return googleResponse
     } else if (!this.isMessageResponseNoHit(databaseResponse) && this.isMessageResponseNoHit(googleResponse)) {
@@ -68,14 +68,13 @@ export class FactCheckSearcher {
     } else if (this.isMessageResponseNoHit(databaseResponse) && !this.isMessageResponseNoHit(googleResponse)) {
       return googleResponse
     } else {
-      //both are MessageResponseHit
-      let databaseResponseCopy = databaseResponse as MessageResponseHit
-      let googleResponseCopy = googleResponse as MessageResponseHit
+      let databaseResponseCopy = databaseResponse as MessageResponseCheckedFacts
+      let googleResponseCopy = googleResponse as MessageResponseCheckedFacts
 
       //add first factcheck of database response in the google response
-      let firstDatabaseFactCheck: HitResult = (databaseResponseCopy.hits)[0]
-      googleResponseCopy.hits.unshift(firstDatabaseFactCheck)
-      googleResponseCopy.hits = googleResponseCopy.hits.slice(0, Math.min(googleResponseCopy.hits.length, 3))
+      let firstDatabaseFactCheck: CheckedFact = (databaseResponseCopy.checkedFacts)[0]
+      googleResponseCopy.checkedFacts.unshift(firstDatabaseFactCheck)
+      googleResponseCopy.checkedFacts = googleResponseCopy.checkedFacts.slice(0, Math.min(googleResponseCopy.checkedFacts.length, 3))
       return googleResponseCopy
     }
   }

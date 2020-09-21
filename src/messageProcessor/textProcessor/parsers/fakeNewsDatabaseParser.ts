@@ -1,5 +1,5 @@
 import { MessageResponse } from "../../../messageResponse/messageResponse"
-import { MessageResponseHit, HitResult } from "../../../messageResponse/messageResponseHit"
+import { MessageResponseCheckedFacts, CheckedFact } from "../../../messageResponse/MessageResponseCheckedFacts"
 import { MessageResponseNoHit } from "../../../messageResponse/messageResponseNoHIt"
 import { HttpError } from "../../http/httpRequest"
 import { HttpParser } from '../../http/httpParser'
@@ -26,33 +26,31 @@ export class FakeNewsDatabaseParser extends HttpParser{
 
   private getMessageResponse(response: string): MessageResponse {
 
-    let hits = this.parseFactChecks(response)
+    let checkedFacts = this.parseFactChecks(response)
 
-    if (hits.length === 0) {
-      //significa que n houve hit
+    if (checkedFacts.length === 0) {
       const messageResponseNoHit: MessageResponseNoHit = {
         type: "NoHit"
       }
       return messageResponseNoHit 
     } 
     else {
-      //significa q houve hits
-      hits = hits.slice(0, Math.min(hits.length, 3))
-      const messageResponseHit: MessageResponseHit = {
-        type: "Hit",
-        hits: hits
+      checkedFacts = checkedFacts.slice(0, Math.min(checkedFacts.length, 3))
+      const messageResponseCheckedFact: MessageResponseCheckedFacts = {
+        type: "CheckedFact",
+        checkedFacts: checkedFacts
       }
-      return messageResponseHit
+      return messageResponseCheckedFact
     }
   }
 
-  private parseFactChecks(response: string) : HitResult[]{
+  private parseFactChecks(response: string) : CheckedFact[]{
     let parsed = JSON.parse(response)
-    let hits: HitResult[] = new Array<HitResult>()
+    let checkedFacts: CheckedFact[] = new Array<CheckedFact>()
 
     for (let i = 0; i < parsed.length; ++i) {
       const elem = parsed[i]
-      hits.push({
+      checkedFacts.push({
         Checado_por: elem.Agencia,
         Checado: elem.Titulo,
         Data: elem.Data,
@@ -60,7 +58,7 @@ export class FakeNewsDatabaseParser extends HttpParser{
       })
     }
 
-    return hits
+    return checkedFacts
   }
 
   private isFactCheckResult(response: string): boolean {
