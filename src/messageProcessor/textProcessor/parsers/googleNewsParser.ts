@@ -1,12 +1,27 @@
 import { MessageResponse } from "@/messageResponse/messageResponse"
-import { HttpError } from "../http/httpRequest"
-import { HttpParser } from "../http/httpParser"
+import { HttpError } from "../../http/httpRequest"
+import { HttpParser } from "../../http/httpParser"
 import { MessageResponseNoHit, News } from "@/messageResponse/messageResponseNoHIt"
 const parseString = require("xml2js").parseString
 
 export class GoogleNewsParser extends HttpParser {
+
+  private dateTranslationMap: Map<string, string> = new Map()
+
   constructor() {
     super()
+    this.dateTranslationMap.set("Jan", "Janeiro")
+    this.dateTranslationMap.set("Feb", "Fevereiro")
+    this.dateTranslationMap.set("Mar", "Março")
+    this.dateTranslationMap.set("Apr", "Abril")
+    this.dateTranslationMap.set("May", "Maio")
+    this.dateTranslationMap.set("Jun", "Junho")
+    this.dateTranslationMap.set("Jul", "Julho")
+    this.dateTranslationMap.set("Aug", "Agosto")
+    this.dateTranslationMap.set("Sep", "Setembro")
+    this.dateTranslationMap.set("Oct", "Outubro")
+    this.dateTranslationMap.set("Nov", "Novembro")
+    this.dateTranslationMap.set("Dec", "Dezembro")
   }
 
   async parseMessage(response: string | HttpError): Promise<MessageResponse> {
@@ -44,18 +59,19 @@ export class GoogleNewsParser extends HttpParser {
 
         const parsedItems = result.rss.channel[0].item
         const news: News[] = this.parseNews(parsedItems)
-
-        console.log(news)
         resolve(news)
       })
     })
   }
 
   private parseNews(parsedItems: any): Array<News> {
-    const news: News[] = new Array<News>()
+    let news: News[] = new Array<News>()
 
-    const numNews = 3
+    if (parsedItems == undefined) {
+      return news
+    }
 
+    const numNews = Math.min(parsedItems.length, 3)
     for (let index = 0; index < numNews; index++) {
       const element = parsedItems[index]
       let title = element.title[0]
@@ -72,6 +88,7 @@ export class GoogleNewsParser extends HttpParser {
         Source: source
       })
     }
+
     return news
   }
 
@@ -89,24 +106,6 @@ export class GoogleNewsParser extends HttpParser {
   }
 
   private getPortugueseDate(date: string): string {
-    const dateTranslationMap = this.setDateTranslationMap()
-    return dateTranslationMap.get(date) as string
-  }
-
-  private setDateTranslationMap(): Map<string, string> {
-    const dateTranslationMap = new Map()
-    dateTranslationMap.set("Jan", "Janeiro")
-    dateTranslationMap.set("Feb", "Fevereiro")
-    dateTranslationMap.set("Mar", "Março")
-    dateTranslationMap.set("Apr", "Abril")
-    dateTranslationMap.set("May", "Maio")
-    dateTranslationMap.set("Jun", "Junho")
-    dateTranslationMap.set("Jul", "Julho")
-    dateTranslationMap.set("Aug", "Agosto")
-    dateTranslationMap.set("Sep", "Setembro")
-    dateTranslationMap.set("Oct", "Outubro")
-    dateTranslationMap.set("Nov", "Novembro")
-    dateTranslationMap.set("Dec", "Dezembro")
-    return dateTranslationMap
+    return this.dateTranslationMap.get(date) as string
   }
 }

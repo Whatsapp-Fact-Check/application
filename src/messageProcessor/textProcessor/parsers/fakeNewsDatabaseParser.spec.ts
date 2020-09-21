@@ -1,9 +1,9 @@
 import { FakeNewsDatabaseParser } from "./fakeNewsDatabaseParser"
-import { MessageResponse } from "../../messageResponse/messageResponse"
-import { MessageResponseHit, HitResult } from "../../messageResponse/messageResponseHit"
-import { MessageResponseNoHit } from "../../messageResponse/messageResponseNoHIt"
-import { expectedTestHits } from "../../__const__/consts"
-import { HttpError } from "../http/httpRequest"
+import { MessageResponse } from "../../../messageResponse/messageResponse"
+import { MessageResponseHit, HitResult } from "../../../messageResponse/messageResponseHit"
+import { MessageResponseNoHit } from "../../../messageResponse/messageResponseNoHIt"
+import { expectedTestHits } from "../../../__const__/consts"
+import { HttpError } from "../../http/httpRequest"
 import { MessageResponseErrorInternal } from '@/messageResponse/messageResponseError'
 
 it("should receive a hit response from python and instantiate messageresponsehit", () => {

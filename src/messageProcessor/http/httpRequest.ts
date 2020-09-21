@@ -1,16 +1,15 @@
 import axios, { AxiosResponse } from "axios"
-import { FakeNewsDataBaseRequest } from "../textProcessor/messageTextProcessor"
 
 export interface HttpError {
   error: string
 }
 
-export type HttpData = FakeNewsDataBaseRequest
 
 export default class HttpRequest {
-  public async post(url: string, data: HttpData): Promise<string | HttpError> {
+  public async post(url: string, data: any): Promise<string | HttpError> {
     try {
-      const result = await axios.post(url, data, { timeout: 10000 })
+      const encodedUrl = encodeURI(url)
+      const result = await axios.post(encodedUrl, data, { timeout: 10000 })
       return this.responseParser(result)
     } catch (err) {
       return this.createHttpError(err.message)
@@ -19,7 +18,8 @@ export default class HttpRequest {
 
   public async get(url: string): Promise<string | HttpError> {
     try {
-      const result = await axios.get(url, { timeout: 10000 })
+      const encodedUrl = encodeURI(url)
+      const result = await axios.get(encodedUrl, { timeout: 10000 })
       return this.responseParser(result)
     } catch (err) {
       return this.createHttpError(err.message)

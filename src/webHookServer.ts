@@ -60,5 +60,11 @@ export class WebHookServer {
       // console.log("Received status callback");
       res.status(200).end("ok")
     })
+
+    this.app.post("/error", (req: any, res: any) => {
+      console.log("Received error callback");
+      console.log(req)
+      res.status(200).end("ok")
+    })
   }
 }

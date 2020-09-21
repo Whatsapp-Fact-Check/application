@@ -8,7 +8,6 @@ export abstract class HttpParser {
 
   constructor() {}
 
-   //e se tiver um parser q retorna outra coisa? any ou union type?
   abstract parseMessage(response: string | HttpError) : MessageResponse | Promise<MessageResponse>
 
   protected isHttpError(response: string | HttpError): response is HttpError {
