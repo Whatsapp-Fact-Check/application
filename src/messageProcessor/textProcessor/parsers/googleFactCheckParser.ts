@@ -2,7 +2,7 @@ import { HttpError } from "@/messageProcessor/http/httpRequest"
 import { MessageResponse } from "@/messageResponse/messageResponse"
 import { HttpParser } from "../../http/httpParser"
 import { CheckedFact, MessageResponseCheckedFacts } from "@/messageResponse/MessageResponseCheckedFacts"
-import { MessageResponseNoHit } from "@/messageResponse/messageResponseNoHIt"
+import { MessageResponseNoHit } from "@/messageResponse/messageResponseNoHit"
 import { GoogleFactCheckFilter } from "./googleFactCheckFilter"
 
 export interface claim {

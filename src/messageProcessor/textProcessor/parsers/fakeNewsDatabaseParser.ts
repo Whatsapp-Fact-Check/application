@@ -1,6 +1,6 @@
 import { MessageResponse } from "../../../messageResponse/messageResponse"
 import { MessageResponseCheckedFacts, CheckedFact } from "../../../messageResponse/MessageResponseCheckedFacts"
-import { MessageResponseNoHit } from "../../../messageResponse/messageResponseNoHIt"
+import { MessageResponseNoHit } from "../../../messageResponse/messageResponseNoHit"
 import { HttpError } from "../../http/httpRequest"
 import { HttpParser } from '../../http/httpParser'
 

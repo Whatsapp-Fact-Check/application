@@ -1,11 +1,11 @@
 import { MessageResponse } from "@/messageResponse/messageResponse"
 import { HttpError } from "../../http/httpRequest"
 import { HttpParser } from "../../http/httpParser"
-import { MessageResponseNoHit, News } from "@/messageResponse/messageResponseNoHIt"
+import { MessageResponseNoHit } from "@/messageResponse/messageResponseNoHit"
+import { MessageResponseRelatedNews, News } from '@/messageResponse/messageResponsRelatedNews'
 const parseString = require("xml2js").parseString
 
 export class GoogleNewsParser extends HttpParser {
-
   private dateTranslationMap: Map<string, string> = new Map()
 
   constructor() {
@@ -34,15 +34,20 @@ export class GoogleNewsParser extends HttpParser {
   }
 
   private async getMessageResponse(response: string): Promise<MessageResponse> {
-    const messageResponseNoHit: MessageResponseNoHit = {
-      type: "NoHit"
-    }
     try {
       const news = await this.parseXml(response)
       if (news.length !== 0) {
-        messageResponseNoHit.relatedNews = news
+        const messageResponse: MessageResponseRelatedNews = {
+          type: "RelatedNews",
+          relatedNews: news
+        }
+        return messageResponse
       }
-      return messageResponseNoHit
+
+      const messageResponse: MessageResponseNoHit = {
+        type: "NoHit"
+      }
+      return messageResponse
     } catch (errorMessage) {
       const messageResponseError = this.createMessageResponseErrorInternal(errorMessage)
       return messageResponseError

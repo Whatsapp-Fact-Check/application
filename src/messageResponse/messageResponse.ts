@@ -1,4 +1,4 @@
-export type messageResponseType = "CheckedFact" | "NoHit" | "Error"
+export type messageResponseType = "CheckedFact" | "RelatedNews" | "NoHit" | "Error"
 export interface MessageResponse {
   type: messageResponseType
 }

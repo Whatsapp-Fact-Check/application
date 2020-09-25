@@ -1,12 +1,4 @@
-import { MessageResponse } from "../messageResponse/messageResponse"
-
-export interface News {
-  Title: string
-  Date: string
-  Source: string
-  Link: string
-}
+import { MessageResponse } from "./messageResponse"
 
 export interface MessageResponseNoHit extends MessageResponse {
-  relatedNews?: News[]
 }

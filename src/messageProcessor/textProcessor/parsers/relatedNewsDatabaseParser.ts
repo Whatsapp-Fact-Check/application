@@ -1,7 +1,8 @@
 import { MessageResponse } from "../../../messageResponse/messageResponse"
-import { MessageResponseNoHit, News } from "../../../messageResponse/messageResponseNoHIt"
+import { MessageResponseNoHit } from "../../../messageResponse/messageResponseNoHit"
 import { HttpError } from "../../http/httpRequest"
 import { HttpParser } from '../../http/httpParser'
+import { MessageResponseRelatedNews, News } from '@/messageResponse/messageResponsRelatedNews'
 
 export class RelatedNewsDatabaseParser extends HttpParser{
   parseMessage(response: string | HttpError): MessageResponse {
@@ -24,16 +25,21 @@ export class RelatedNewsDatabaseParser extends HttpParser{
   }
 
   private getMessageResponse(response: string): MessageResponse {
-    const messageResponseNoHit: MessageResponseNoHit = {
-      type: "NoHit"
-    }
+
     let news = this.parseRelatedNews(response)
     if (news.length !== 0) {
       news = news.slice(0, Math.min(news.length, 3))
-      messageResponseNoHit.relatedNews = news
+      const messageResponse: MessageResponseRelatedNews = {
+        type: "RelatedNews",
+        relatedNews: news
+      }
+      return messageResponse
     }
     
-    return messageResponseNoHit
+    const messageResponse: MessageResponseNoHit = {
+      type: "NoHit"
+    }
+    return messageResponse
   }
 
   private parseRelatedNews(response: string) : News[]{

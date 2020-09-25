@@ -2,7 +2,8 @@ import HttpRequest from "../../../messageProcessor/http/httpRequest"
 import { RelatedNewsDatabaseParser } from "../parsers/relatedNewsDatabaseParser"
 import { GoogleNewsParser } from "../parsers/googleNewsParser"
 import { MessageResponse } from "@/messageResponse/messageResponse"
-import { MessageResponseNoHit, News } from "@/messageResponse/messageResponseNoHIt"
+import { MessageResponseNoHit } from "@/messageResponse/messageResponseNoHit"
+import { MessageResponseRelatedNews, News } from "@/messageResponse/messageResponsRelatedNews"
 
 export class RelatedNewsSearcher {
   private databaseUrl = "http://34.94.124.1:8080/noticia"
@@ -51,22 +52,29 @@ export class RelatedNewsSearcher {
   }
 
   private concatenateResults(
-    databaseResponse: MessageResponseNoHit,
-    googleResponse: MessageResponseNoHit
-  ): MessageResponseNoHit {
-    if (!("relatedNews" in databaseResponse) && !("relatedNews" in googleResponse)) {
+    databaseResponse: MessageResponseRelatedNews | MessageResponseNoHit,
+    googleResponse: MessageResponseRelatedNews | MessageResponseNoHit
+  ): MessageResponseRelatedNews | MessageResponseNoHit {
+    if (this.isMessageResponseNoHit(databaseResponse) && this.isMessageResponseNoHit(googleResponse)) {
       return googleResponse
-    } else if ("relatedNews" in databaseResponse && !("relatedNews" in googleResponse)) {
+    } else if (!this.isMessageResponseNoHit(databaseResponse) && this.isMessageResponseNoHit(googleResponse)) {
       return databaseResponse
-    } else if (!("relatedNews" in databaseResponse) && "relatedNews" in googleResponse) {
+    } else if (this.isMessageResponseNoHit(databaseResponse) && !this.isMessageResponseNoHit(googleResponse)) {
       return googleResponse
     } else {
+      let databaseResponseCopy = databaseResponse as MessageResponseRelatedNews
+      let googleResponseCopy = googleResponse as MessageResponseRelatedNews
+
       //add first news of database response in the google response
-      let firstDatabaseNews: News = (databaseResponse.relatedNews as News[])[0]
-      googleResponse.relatedNews?.unshift(firstDatabaseNews)
-      googleResponse.relatedNews = googleResponse.relatedNews?.slice(0, Math.min(googleResponse.relatedNews?.length, 3))
-      return googleResponse
+      let firstDatabaseNews: News = (databaseResponseCopy.relatedNews as News[])[0]
+      googleResponseCopy.relatedNews.unshift(firstDatabaseNews)
+      googleResponseCopy.relatedNews = googleResponseCopy.relatedNews.slice(0, Math.min(googleResponseCopy.relatedNews.length, 3))
+      return googleResponseCopy
     }
+  }
+
+  private isMessageResponseNoHit(messageResponse: MessageResponse): boolean {
+    return messageResponse.type == "NoHit"
   }
 
   private isMessageResponseError(messageResponse: MessageResponse): boolean {
