@@ -1,25 +1,25 @@
+import { httpResponseOrError } from '@/messageProcessor/http/httpRequest'
 import { MessageResponse } from "../../../messageResponse/messageResponse"
 import { MessageResponseCheckedFacts, CheckedFact } from "../../../messageResponse/MessageResponseCheckedFacts"
 import { MessageResponseNoHit } from "../../../messageResponse/messageResponseNoHit"
-import { HttpError } from "../../http/httpRequest"
 import { HttpParser } from '../../http/httpParser'
 
 export class FakeNewsDatabaseParser extends HttpParser{
-  parseMessage(response: string | HttpError): MessageResponse {
+  parseMessage(response: httpResponseOrError): MessageResponse {
     if (this.isHttpError(response)) {
       const messageResponseError = this.createMessageResponseErrorInternal(response.error)
       return messageResponseError
     }
 
     if (!this.isJson(response)) {
-      const messageResponseError = this.createMessageResponseErrorInternal("NotJsonStructure")
+      const messageResponseError = this.createMessageResponseErrorInternal(new Error("NotJsonStructure"))
       return messageResponseError
     }
 
     if (this.isFactCheckResult(response)) {
       return this.getMessageResponse(response)
     } else {
-      const messageResponseError = this.createMessageResponseErrorInternal("UnknownTypePythonResponse")
+      const messageResponseError = this.createMessageResponseErrorInternal(new Error("UnknownTypePythonResponse"))
       return messageResponseError
     }
   }

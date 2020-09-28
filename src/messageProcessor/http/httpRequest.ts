@@ -1,55 +1,52 @@
+import { ErrorInternal } from '@/error/errorInternal'
 import axios, { AxiosResponse } from "axios"
 
-export interface HttpError {
-  error: string
-}
-
+type jsonString = string
+export type httpResponseOrError = jsonString | ErrorInternal
 
 export default class HttpRequest {
-  public async post(url: string, data: any): Promise<string | HttpError> {
+  private requestTimeout: number = 5000
+
+  public async post(url: string, data: any): Promise<httpResponseOrError> {
     try {
       const encodedUrl = encodeURI(url)
-      const result = await axios.post(encodedUrl, data, { timeout: 10000 })
+      const result = await axios.post(encodedUrl, data, { timeout: this.requestTimeout })
       return this.responseParser(result)
     } catch (err) {
-      return this.createHttpError(err.message)
+      return this.createHttpError(err)
     }
   }
 
-  public async get(url: string): Promise<string | HttpError> {
+  public async get(url: string): Promise<httpResponseOrError> {
     try {
       const encodedUrl = encodeURI(url)
-      const result = await axios.get(encodedUrl, { timeout: 10000 })
+      const result = await axios.get(encodedUrl, { timeout: this.requestTimeout })
       return this.responseParser(result)
     } catch (err) {
-      return this.createHttpError(err.message)
+      return this.createHttpError(err)
     }
   }
 
-  private responseParser(response: AxiosResponse<any>): string | HttpError {
-    let httpErrorObject: HttpError
+  private responseParser(response: AxiosResponse<any>): httpResponseOrError {
     if (response !== null) {
       if (response !== undefined) {
         if ("data" in response) {
           return JSON.stringify(response.data)
         } else {
-          httpErrorObject = this.createHttpError("NoDataField")
-          return httpErrorObject
+          return this.createHttpError(new Error("NoDataField"))
         }
-      } else {
-        httpErrorObject = this.createHttpError("UndefinedAxiosResponse")
-        return httpErrorObject
+      } else {        
+        return this.createHttpError(new Error("UndefinedAxiosResponse"))
       }
     } else {
-      httpErrorObject = this.createHttpError("NullAxiosResponse")
-      return httpErrorObject
+      return this.createHttpError(new Error("NullAxiosResponse"))
     }
   }
 
-  private createHttpError(error: string): HttpError {
-    const messageHttpError: HttpError = {
+  private createHttpError(error: Error): ErrorInternal {
+    const httpError: ErrorInternal = {
       error: error
     }
-    return messageHttpError
+    return httpError
   }
 }

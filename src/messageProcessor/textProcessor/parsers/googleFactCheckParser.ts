@@ -1,9 +1,9 @@
-import { HttpError } from "@/messageProcessor/http/httpRequest"
 import { MessageResponse } from "@/messageResponse/messageResponse"
 import { HttpParser } from "../../http/httpParser"
 import { CheckedFact, MessageResponseCheckedFacts } from "@/messageResponse/MessageResponseCheckedFacts"
 import { MessageResponseNoHit } from "@/messageResponse/messageResponseNoHit"
 import { GoogleFactCheckFilter } from "./googleFactCheckFilter"
+import { httpResponseOrError } from '@/messageProcessor/http/httpRequest'
 
 export interface claim {
   text: string
@@ -48,14 +48,14 @@ export class GoogleFactCheckParser extends HttpParser {
     this.dateTranslationMap.set("12", "Dezembro")
   }
 
-  parseMessage(response: string | HttpError): MessageResponse {
+  parseMessage(response: httpResponseOrError): MessageResponse {
     if (this.isHttpError(response)) {
       const messageResponseError = this.createMessageResponseErrorInternal(response.error)
       return messageResponseError
     }
 
     if (!this.isJson(response)) {
-      const messageResponseError = this.createMessageResponseErrorInternal("NotJsonStructure")
+      const messageResponseError = this.createMessageResponseErrorInternal(new Error("NotJsonStructure"))
       return messageResponseError
     }
 
@@ -69,9 +69,9 @@ export class GoogleFactCheckParser extends HttpParser {
     }
 
     if (!this.isGoogleFactCheckResponse(factCheckResponse)) {
-      const messageResponseError = this.createMessageResponseErrorInternal(
+      const messageResponseError = this.createMessageResponseErrorInternal(new Error(
         "Invalid Response Body from Google Fact Check"
-      )
+      ))
       return messageResponseError
     }
 

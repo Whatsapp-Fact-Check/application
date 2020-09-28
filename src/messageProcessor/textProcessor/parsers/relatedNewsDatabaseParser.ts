@@ -1,25 +1,25 @@
 import { MessageResponse } from "../../../messageResponse/messageResponse"
 import { MessageResponseNoHit } from "../../../messageResponse/messageResponseNoHit"
-import { HttpError } from "../../http/httpRequest"
 import { HttpParser } from '../../http/httpParser'
 import { MessageResponseRelatedNews, News } from '@/messageResponse/messageResponsRelatedNews'
+import { httpResponseOrError } from '@/messageProcessor/http/httpRequest'
 
 export class RelatedNewsDatabaseParser extends HttpParser{
-  parseMessage(response: string | HttpError): MessageResponse {
+  parseMessage(response: httpResponseOrError): MessageResponse {
     if (this.isHttpError(response)) {
       const messageResponseError = this.createMessageResponseErrorInternal(response.error)
       return messageResponseError
     }
 
     if (!this.isJson(response)) {
-      const messageResponseError = this.createMessageResponseErrorInternal("NotJsonStructure")
+      const messageResponseError = this.createMessageResponseErrorInternal(new Error("NotJsonStructure"))
       return messageResponseError
     }
 
     if (this.isRelatedNewsResult(response)) {
       return this.getMessageResponse(response)
     } else {
-      const messageResponseError = this.createMessageResponseErrorInternal("UnknownTypePythonResponse")
+      const messageResponseError = this.createMessageResponseErrorInternal(new Error("UnknownTypePythonResponse"))
       return messageResponseError
     }
   }

@@ -1,8 +1,8 @@
 import { MessageResponse } from "@/messageResponse/messageResponse"
-import { HttpError } from "../../http/httpRequest"
 import { HttpParser } from "../../http/httpParser"
 import { MessageResponseNoHit } from "@/messageResponse/messageResponseNoHit"
 import { MessageResponseRelatedNews, News } from '@/messageResponse/messageResponsRelatedNews'
+import { httpResponseOrError } from '@/messageProcessor/http/httpRequest'
 const parseString = require("xml2js").parseString
 
 export class GoogleNewsParser extends HttpParser {
@@ -24,7 +24,7 @@ export class GoogleNewsParser extends HttpParser {
     this.dateTranslationMap.set("Dec", "Dezembro")
   }
 
-  async parseMessage(response: string | HttpError): Promise<MessageResponse> {
+  async parseMessage(response: httpResponseOrError): Promise<MessageResponse> {
     if (this.isHttpError(response)) {
       const messageResponseError = this.createMessageResponseErrorInternal(response.error)
       return messageResponseError
@@ -48,8 +48,8 @@ export class GoogleNewsParser extends HttpParser {
         type: "NoHit"
       }
       return messageResponse
-    } catch (errorMessage) {
-      const messageResponseError = this.createMessageResponseErrorInternal(errorMessage)
+    } catch (error) {
+      const messageResponseError = this.createMessageResponseErrorInternal(error)
       return messageResponseError
     }
   }

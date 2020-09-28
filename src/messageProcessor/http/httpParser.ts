@@ -1,6 +1,7 @@
-import { HttpError } from './httpRequest'
 import { MessageResponseErrorInternal } from '@/messageResponse/messageResponseError'
 import { MessageResponse } from '@/messageResponse/messageResponse'
+import { httpResponseOrError } from './httpRequest'
+import { ErrorInternal } from '@/error/errorInternal'
 
 
 
@@ -8,19 +9,16 @@ export abstract class HttpParser {
 
   constructor() {}
 
-  abstract parseMessage(response: string | HttpError) : MessageResponse | Promise<MessageResponse>
+  abstract parseMessage(response: httpResponseOrError) : MessageResponse | Promise<MessageResponse>
 
-  protected isHttpError(response: string | HttpError): response is HttpError {
-    if (response !== undefined && (response as HttpError).error) {
-      return true
-    }
-    return false
+  protected isHttpError(response: httpResponseOrError): response is ErrorInternal {
+    return (typeof response !== "string")
   }
   
-  protected createMessageResponseErrorInternal(error: string): MessageResponseErrorInternal {
+  protected createMessageResponseErrorInternal(error: Error): MessageResponseErrorInternal {
     const messageResponseError: MessageResponseErrorInternal = {
       type: "Error",
-      errorInternal: { error: new Error(error) }
+      errorInternal: { error: error }
     }
     return messageResponseError
   }
