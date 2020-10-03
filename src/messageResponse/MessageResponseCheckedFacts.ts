@@ -1,5 +1,4 @@
 import { MessageResponse } from "./messageResponse"
-import { MessageResponseHint } from './messageResponseHint';
 
 export interface CheckedFact {
   Checado: string
@@ -7,6 +6,6 @@ export interface CheckedFact {
   Checado_por: string
   Link: string
 }
-export interface MessageResponseCheckedFacts extends MessageResponseHint {
+export interface MessageResponseCheckedFacts extends MessageResponse {
   checkedFacts: CheckedFact[]
 }
