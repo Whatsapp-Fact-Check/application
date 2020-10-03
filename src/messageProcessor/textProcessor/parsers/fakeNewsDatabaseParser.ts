@@ -38,6 +38,7 @@ export class FakeNewsDatabaseParser extends HttpParser{
       checkedFacts = checkedFacts.slice(0, Math.min(checkedFacts.length, 3))
       const messageResponseCheckedFact: MessageResponseCheckedFacts = {
         type: "CheckedFact",
+        hint: "NoHint",
         checkedFacts: checkedFacts
       }
       return messageResponseCheckedFact
