@@ -7,6 +7,6 @@ export interface CheckedFact {
   Checado_por: string
   Link: string
 }
-export interface MessageResponseCheckedFacts extends MessageResponse, MessageResponseHint {
+export interface MessageResponseCheckedFacts extends MessageResponseHint {
   checkedFacts: CheckedFact[]
 }

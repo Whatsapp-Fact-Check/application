@@ -8,6 +8,6 @@ export interface News {
   Link: string
 }
 
-export interface MessageResponseRelatedNews extends MessageResponse,MessageResponseHint {
+export interface MessageResponseRelatedNews extends MessageResponseHint {
   relatedNews: News[]
 }
