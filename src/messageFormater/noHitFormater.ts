@@ -15,7 +15,7 @@ export class NoHitFormater implements MessageResponseFormater {
     return (
       "Não encontramos nada correspondente 😓\n\n" +
       "Tente mandar de novo mudando um pouco a frase, usando sinônimos... Pode ser que isso ajude a gente a encontrar!" +
-      " Lembre-se de sempre mandar textos curtos com as palavras chave do assunto que quer checar."
+      " Lembre-se de sempre mandar textos curtos com as palavras chave do assunto que quer checar, como por exemplo: Limão cura coronavírus."
     )
   }
 
