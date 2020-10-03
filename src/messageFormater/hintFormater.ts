@@ -1,11 +1,18 @@
-import { MessageResponseCheckedFacts } from "@/messageResponse/MessageResponseCheckedFacts"
+import { MessageResponse } from '@/messageResponse/messageResponse'
 import { MessageResponseHint } from '@/messageResponse/messageResponseHint'
+import { MessageResponseFormater, RegisterResponseFormater } from './messageFormatter'
 
-export abstract class HintFormater {
-  constructor() {}
+@RegisterResponseFormater
+export class HintFormater implements MessageResponseFormater {
+  type: string
 
-  formatHintMessage(messageResponse: MessageResponseHint): string {
-    switch (messageResponse.hint) {
+  constructor() {
+    this.type = "Hint"
+  }
+
+  formatMessage(messageResponse: MessageResponse): string {
+    const message = this.toMessageResponseHint(messageResponse)
+    switch (message.hint) {
       case "LongText":
         return this.longTextHint()
 
@@ -19,4 +26,7 @@ export abstract class HintFormater {
     "com as palavras chave do assunto que quer checar. Por exemplo, tente: Limão cura coronavírus."
   }
 
+  private toMessageResponseHint(messageResponse: MessageResponse): MessageResponseHint {
+    return messageResponse as MessageResponseHint
+  }
 }
