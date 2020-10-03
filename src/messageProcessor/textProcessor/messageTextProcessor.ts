@@ -5,7 +5,7 @@ import { MessageRequestText } from "../../messageRequest/messageRequestText"
 import { FactCheckSearcher } from "./searches/factCheck"
 import { RelatedNewsSearcher } from "./searches/relatedNews"
 import { HintProcessor } from "./hintProcessor"
-import { MessageResponseHint } from "@/messageResponse/messageResponseHint"
+import { MessageResponseHint } from "../../messageResponse/messageResponseHint"
 import { ActiveMessageSender } from "../../asyncMessage/activeMessageSender"
 
 @RegisterMessageProcessor

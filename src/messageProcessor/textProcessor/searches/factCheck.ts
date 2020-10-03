@@ -3,7 +3,7 @@ import { FakeNewsDatabaseParser } from "../parsers/fakeNewsDatabaseParser"
 import { GoogleFactCheckParser } from "../parsers/googleFactCheckParser"
 import { MessageResponse } from "@/messageResponse/messageResponse"
 import { CheckedFact, MessageResponseCheckedFacts } from "@/messageResponse/MessageResponseCheckedFacts"
-import { MessageResponseNoHit } from "@/messageResponse/messageResponseNoHit"
+import { MessageResponseNoHit } from "../../../messageResponse/messageResponseNoHit"
 
 export class FactCheckSearcher {
   private databaseUrl = "http://34.94.124.1:8080/checagem"

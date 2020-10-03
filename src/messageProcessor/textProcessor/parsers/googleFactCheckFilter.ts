@@ -1,4 +1,4 @@
-import { CheckedFact } from '@/messageResponse/MessageResponseCheckedFacts';
+import { CheckedFact } from '../../../messageResponse/MessageResponseCheckedFacts';
 
 export class GoogleFactCheckFilter{
     constructor() {

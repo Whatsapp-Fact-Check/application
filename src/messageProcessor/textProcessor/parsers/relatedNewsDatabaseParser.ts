@@ -2,7 +2,7 @@ import { MessageResponse } from "../../../messageResponse/messageResponse"
 import { MessageResponseNoHit } from "../../../messageResponse/messageResponseNoHit"
 import { HttpParser } from '../../http/httpParser'
 import { MessageResponseRelatedNews, News } from '@/messageResponse/messageResponsRelatedNews'
-import { httpResponseOrError } from '@/messageProcessor/http/httpRequest'
+import { httpResponseOrError } from '../../../messageProcessor/http/httpRequest'
 
 export class RelatedNewsDatabaseParser extends HttpParser{
   parseMessage(response: httpResponseOrError): MessageResponse {

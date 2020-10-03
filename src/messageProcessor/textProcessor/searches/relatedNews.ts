@@ -2,7 +2,7 @@ import HttpRequest from "../../../messageProcessor/http/httpRequest"
 import { RelatedNewsDatabaseParser } from "../parsers/relatedNewsDatabaseParser"
 import { GoogleNewsParser } from "../parsers/googleNewsParser"
 import { MessageResponse } from "@/messageResponse/messageResponse"
-import { MessageResponseNoHit } from "@/messageResponse/messageResponseNoHit"
+import { MessageResponseNoHit } from "../../../messageResponse/messageResponseNoHit"
 import { MessageResponseRelatedNews, News } from "@/messageResponse/messageResponsRelatedNews"
 
 export class RelatedNewsSearcher {

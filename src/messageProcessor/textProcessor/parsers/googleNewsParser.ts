@@ -1,6 +1,6 @@
 import { MessageResponse } from "@/messageResponse/messageResponse"
 import { HttpParser } from "../../http/httpParser"
-import { MessageResponseNoHit } from "@/messageResponse/messageResponseNoHit"
+import { MessageResponseNoHit } from "../../../messageResponse/messageResponseNoHit"
 import { MessageResponseRelatedNews, News } from '@/messageResponse/messageResponsRelatedNews'
 import { httpResponseOrError } from '@/messageProcessor/http/httpRequest'
 const parseString = require("xml2js").parseString

@@ -1,7 +1,7 @@
 import { MessageResponse } from "@/messageResponse/messageResponse"
 import { HttpParser } from "../../http/httpParser"
 import { CheckedFact, MessageResponseCheckedFacts } from "@/messageResponse/MessageResponseCheckedFacts"
-import { MessageResponseNoHit } from "@/messageResponse/messageResponseNoHit"
+import { MessageResponseNoHit } from "../../../messageResponse/messageResponseNoHit"
 import { GoogleFactCheckFilter } from "./googleFactCheckFilter"
 import { httpResponseOrError } from '@/messageProcessor/http/httpRequest'
 
