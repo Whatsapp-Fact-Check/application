@@ -82,7 +82,6 @@ export class GoogleFactCheckParser extends HttpParser {
     } else {
       const messageResponseCheckedFact: MessageResponseCheckedFacts = {
         type: "CheckedFact",
-        hint: "NoHint",
         checkedFacts: checkedFacts
       }
       return messageResponseCheckedFact

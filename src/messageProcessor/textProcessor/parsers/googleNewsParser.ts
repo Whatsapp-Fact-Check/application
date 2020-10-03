@@ -39,7 +39,6 @@ export class GoogleNewsParser extends HttpParser {
       if (news.length !== 0) {
         const messageResponse: MessageResponseRelatedNews = {
           type: "RelatedNews",
-          hint: "NoHint",
           relatedNews: news
         }
         return messageResponse

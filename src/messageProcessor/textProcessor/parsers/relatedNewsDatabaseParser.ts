@@ -31,7 +31,6 @@ export class RelatedNewsDatabaseParser extends HttpParser{
       news = news.slice(0, Math.min(news.length, 3))
       const messageResponse: MessageResponseRelatedNews = {
         type: "RelatedNews",
-        hint: "NoHint",
         relatedNews: news
       }
       return messageResponse

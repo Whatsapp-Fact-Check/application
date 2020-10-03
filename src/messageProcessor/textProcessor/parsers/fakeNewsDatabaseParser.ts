@@ -1,10 +1,10 @@
-import { httpResponseOrError } from '@/messageProcessor/http/httpRequest'
+import { httpResponseOrError } from "@/messageProcessor/http/httpRequest"
 import { MessageResponse } from "../../../messageResponse/messageResponse"
 import { MessageResponseCheckedFacts, CheckedFact } from "../../../messageResponse/MessageResponseCheckedFacts"
 import { MessageResponseNoHit } from "../../../messageResponse/messageResponseNoHit"
-import { HttpParser } from '../../http/httpParser'
+import { HttpParser } from "../../http/httpParser"
 
-export class FakeNewsDatabaseParser extends HttpParser{
+export class FakeNewsDatabaseParser extends HttpParser {
   parseMessage(response: httpResponseOrError): MessageResponse {
     if (this.isHttpError(response)) {
       const messageResponseError = this.createMessageResponseErrorInternal(response.error)
@@ -25,27 +25,24 @@ export class FakeNewsDatabaseParser extends HttpParser{
   }
 
   private getMessageResponse(response: string): MessageResponse {
-
     let checkedFacts = this.parseFactChecks(response)
 
     if (checkedFacts.length === 0) {
       const messageResponseNoHit: MessageResponseNoHit = {
         type: "NoHit"
       }
-      return messageResponseNoHit 
-    } 
-    else {
+      return messageResponseNoHit
+    } else {
       checkedFacts = checkedFacts.slice(0, Math.min(checkedFacts.length, 3))
       const messageResponseCheckedFact: MessageResponseCheckedFacts = {
         type: "CheckedFact",
-        hint: "NoHint",
         checkedFacts: checkedFacts
       }
       return messageResponseCheckedFact
     }
   }
 
-  private parseFactChecks(response: string) : CheckedFact[]{
+  private parseFactChecks(response: string): CheckedFact[] {
     let parsed = JSON.parse(response)
     let checkedFacts: CheckedFact[] = new Array<CheckedFact>()
 
@@ -76,7 +73,7 @@ export class FakeNewsDatabaseParser extends HttpParser{
   }
 
   private isFactCheck(response: any): boolean {
-    return ("Agencia" in response && "Data" in response && "Link" in response && "Titulo" in response) 
+    return "Agencia" in response && "Data" in response && "Link" in response && "Titulo" in response
   }
 
   private isJson(response: string): boolean {
@@ -87,5 +84,4 @@ export class FakeNewsDatabaseParser extends HttpParser{
       return false
     }
   }
-
 }
