@@ -20,13 +20,15 @@ export class FactCheckSearcher {
   }
 
   public async searchFactChecks(text: string): Promise<MessageResponse> {
-    let messageResponseDatabase, messageResponseGoogle: MessageResponse
+    
+    let messageResponseDatabase: MessageResponseNoHit = {type:"NoHit"}
+    // let messageResponseDatabase: MessageResponse
+    // messageResponseDatabase = await this.searchFakeNewsDatabase(text)
+    // if (this.isMessageResponseError(messageResponseDatabase)) {
+    //   return messageResponseDatabase
+    // }
 
-    messageResponseDatabase = await this.searchFakeNewsDatabase(text)
-    if (this.isMessageResponseError(messageResponseDatabase)) {
-      return messageResponseDatabase
-    }
-
+    let messageResponseGoogle: MessageResponse
     messageResponseGoogle = await this.searchGoogleFactCheck(text)
     if (this.isMessageResponseError(messageResponseGoogle)) {
       return messageResponseGoogle

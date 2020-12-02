@@ -19,13 +19,15 @@ export class RelatedNewsSearcher {
   }
 
   public async searchRelatedNews(text: string): Promise<MessageResponse> {
-    let messageResponseDatabase, messageResponseGoogle: MessageResponse
+    
+    let messageResponseDatabase: MessageResponseNoHit = {type:"NoHit"}
+    // let messageResponseDatabase: MessageResponse
+    // messageResponseDatabase = await this.searchRelatedNewsDatabase(text)
+    // if (this.isMessageResponseError(messageResponseDatabase)) {
+    //   return messageResponseDatabase
+    // }
 
-    messageResponseDatabase = await this.searchRelatedNewsDatabase(text)
-    if (this.isMessageResponseError(messageResponseDatabase)) {
-      return messageResponseDatabase
-    }
-
+    let messageResponseGoogle: MessageResponse
     messageResponseGoogle = await this.searchGoogleNews(text)
     if (this.isMessageResponseError(messageResponseGoogle)) {
       return messageResponseGoogle
